@@ -74,6 +74,7 @@ Padrão base: **MapReduce** (dividir → processar em paralelo → combinar).
 projeto-sd/
 ├── CLAUDE.md
 ├── README.md
+├── Makefile                # build dos relatórios/apresentações (make ajuda)
 ├── docs/
 │   ├── padrao.md           # regras de relatório, slides e commits
 │   └── decisoes/           # uma decisão importante por arquivo
@@ -92,7 +93,7 @@ projeto-sd/
 ```
 
 ### Padrão de relatórios (LaTeX)
-- Preâmbulo comum em `relatorios/template/`; uma seção por arquivo (`\input{secoes/...}`); referências em um `.bib` compartilhado. Usar abnTeX2 se o professor exigir ABNT.
+- Build: `make relatorio S=XX` na raiz (ver README). Preâmbulo comum em `relatorios/template/`; uma seção por arquivo (`\input{secoes/...}`); referências em um `.bib` compartilhado. Usar abnTeX2 se o professor exigir ABNT.
 - **Capa obrigatória em todo relatório**, com:
   - logo da universidade (UNITINS)
   - instituição, curso e disciplina

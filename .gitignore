@@ -34,3 +34,6 @@ venv/
 .DS_Store
 .vscode/
 .idea/
+
+# PDF de conferência do template (make template)
+relatorios/template/template.pdf
