@@ -21,10 +21,6 @@ data/
 *.xdv
 build/
 
-# PDFs gerados (vão anexados na Release da semana)
-relatorios/semana-*/*.pdf
-apresentacoes/*/*.pdf
-
 # Python
 __pycache__/
 *.pyc

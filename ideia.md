@@ -61,7 +61,6 @@ Padrão base: **MapReduce** (dividir → processar em paralelo → combinar).
 ### Versionamento
 - **Git + GitHub**, repositório público. Todos fazem commit e push direto na `main` (sem branches nem Pull Requests obrigatórios). Antes de começar a trabalhar, sempre `git pull`.
 - Commits: curtos, no imperativo (ex.: `adiciona seção de resultados da semana 3`).
-- Cada entrega semanal vira uma **tag + Release** (`semana-01`, `semana-02`...) com o PDF anexado.
 - Tarefas como **issues** no GitHub Projects (A fazer → Fazendo → Feito), cada uma com responsável e prazo.
 
 ### Papéis rotativos (trocam a cada semana)
