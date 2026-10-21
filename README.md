@@ -10,12 +10,7 @@ Sistema mestre/workers (padrão MapReduce) para processamento de alto volume de 
 
 | Pasta | Conteúdo |
 |---|---|
-| `docs/` | `padrao.md` (regras de relatório, slides e commits) e `decisoes/` (uma decisão por arquivo) |
 | `relatorios/` | `template/` com preâmbulo, capa e `dados.tex` compartilhados; uma pasta por semana (`semana-XX/`) |
-| `apresentacoes/` | `template/` e uma pasta por apresentação (`AAAA-MM-DD-nome/`) |
-| `src/` | código do mestre (`master/`) e dos workers (`worker/`) |
-| `experimentos/` | scripts, resultados (CSV) e gráficos |
-| `infra/` | Vagrantfile, docker-compose e configuração das VMs |
 
 ## Relatórios em LaTeX
 
@@ -36,7 +31,7 @@ make                        # mostra a ajuda e os relatórios existentes
 make novo-relatorio S=01    # cria relatorios/semana-01/ a partir do template
 make relatorio S=01         # gera relatorios/semana-01/relatorio-semana-01.pdf
 make assistir S=01          # recompila sozinho sempre que um .tex for salvo (Ctrl+C para sair)
-make todos                  # gera todos os relatórios e apresentações
+make todos                  # gera todos os relatórios
 make template               # gera o PDF do template, para conferir a capa
 make limpar                 # apaga arquivos auxiliares (.aux, .log...)
 ```
@@ -61,7 +56,7 @@ Se a compilação falhar, o `make` mostra o arquivo e a linha do erro, e o log c
 
 ## Dados
 
-Os dados **não** são versionados. Para obtê-los, use os scripts em `experimentos/` (seed e checksum documentados aqui quando definidos).
+Os dados **não** são versionados. Para obtê-los, use os scripts de download/geração (seed e checksum documentados aqui quando definidos).
 
 ## Fluxo de trabalho
 

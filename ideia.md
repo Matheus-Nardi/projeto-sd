@@ -69,27 +69,18 @@ Padrão base: **MapReduce** (dividir → processar em paralelo → combinar).
 - **Responsável técnico:** código e experimentos da semana.
 - **Apresentador:** apresenta quando houver apresentação.
 
-### Estrutura do repositório (planejada)
+### Estrutura do repositório
+Mantida enxuta de propósito: novas pastas só entram quando houver conteúdo para elas (ex.: código, experimentos).
 ```
 projeto-sd/
 ├── CLAUDE.md
 ├── README.md
-├── Makefile                # build dos relatórios/apresentações (make ajuda)
-├── docs/
-│   ├── padrao.md           # regras de relatório, slides e commits
-│   └── decisoes/           # uma decisão importante por arquivo
-├── relatorios/
-│   ├── template/           # preâmbulo LaTeX, capa, dados.tex (dados compartilhados), img/logo + main.tex modelo
-│   └── semana-XX/
-├── apresentacoes/
-│   ├── template/
-│   └── AAAA-MM-DD-nome/
-├── src/
-│   ├── master/
-│   └── worker/
-├── experimentos/           # scripts, resultados (CSV) e gráficos
-├── infra/                  # Vagrantfile, docker-compose, configuração das VMs
-└── .gitignore              # ignora auxiliares do LaTeX e a pasta de dados
+├── ideia.md                # este arquivo: contexto e decisões
+├── Makefile                # build dos relatórios (make ajuda)
+├── .gitignore              # ignora auxiliares do LaTeX e a pasta de dados
+└── relatorios/
+    ├── template/           # preâmbulo, capa, dados.tex (dados compartilhados), img/logo, main.tex modelo e secoes/
+    └── semana-XX/          # criado com make novo-relatorio S=XX
 ```
 
 ### Padrão de relatórios (LaTeX)
@@ -122,7 +113,7 @@ projeto-sd/
 
 - [ ] Reunião do grupo: definir cenário, pergunta do sistema, ambiente e papéis da semana 1
 - [x] Criar o repositório no GitHub e convidar os integrantes
-- [ ] Escrever `docs/padrao.md` e o template LaTeX
+- [x] Template LaTeX dos relatórios e Makefile de build
 - [ ] **Apresentação do pré-projeto (22/10/2026)**, roteiro sugerido:
   1. Problema e cenário escolhido
   2. Por que é um problema distribuído (volume de dados, limite de uma máquina só)
@@ -137,7 +128,7 @@ projeto-sd/
 
 - O grupo **ainda está aprendendo** Sistemas Distribuídos: explique os conceitos de forma didática e justifique as escolhas técnicas.
 - Responda em **português**.
-- Siga o `docs/padrao.md` ao gerar relatórios, slides ou código.
+- Siga os padrões descritos neste arquivo ao gerar relatórios, slides ou código.
 - Prefira soluções simples e reprodutíveis (seed fixa, scripts versionados, ambiente via Vagrant/Docker).
-- Ao tomar ou sugerir uma decisão importante, proponha registrá-la em `docs/decisoes/` e atualizar este arquivo.
+- Ao tomar ou sugerir uma decisão importante, proponha registrá-la neste arquivo e na seção "Decisões tomadas" do relatório da semana.
 - Itens marcados como _[A DEFINIR]_ ainda não foram decididos pelo grupo: não assuma valores para eles; pergunte.
