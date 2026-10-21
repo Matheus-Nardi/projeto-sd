@@ -23,6 +23,5 @@ Os dados **não** são versionados. Para obtê-los, use os scripts em `experimen
 
 ## Fluxo de trabalho
 
-- A `main` é protegida: tudo entra por Pull Request com 1 aprovação.
-- Branches: `semana-XX/descricao-curta`.
+- Trabalho direto na `main`: `git pull` antes de começar, depois `git add`, `git commit` e `git push`.
 - Cada entrega semanal vira uma tag + Release (`semana-01`, `semana-02`...) com o PDF anexado.

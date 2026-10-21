@@ -1,7 +1,7 @@
 # Projeto de Sistemas Distribuídos — Contexto
 
 > Arquivo de contexto para o Claude Code e para os integrantes do grupo.
-> Atualize este arquivo sempre que uma decisão importante for tomada (no mesmo PR da mudança).
+> Atualize este arquivo sempre que uma decisão importante for tomada (no mesmo commit da mudança).
 
 ## Sobre o projeto
 
@@ -59,15 +59,14 @@ Padrão base: **MapReduce** (dividir → processar em paralelo → combinar).
 ## Organização do grupo
 
 ### Versionamento
-- **Git + GitHub**, repositório privado. A `main` é protegida: tudo entra por Pull Request com 1 aprovação de outro integrante.
-- Branches: `semana-XX/descricao-curta` (ex.: `semana-02/relatorio-resultados`).
+- **Git + GitHub**, repositório público. Todos fazem commit e push direto na `main` (sem branches nem Pull Requests obrigatórios). Antes de começar a trabalhar, sempre `git pull`.
 - Commits: curtos, no imperativo (ex.: `adiciona seção de resultados da semana 3`).
 - Cada entrega semanal vira uma **tag + Release** (`semana-01`, `semana-02`...) com o PDF anexado.
-- Tarefas como **issues** no GitHub Projects (A fazer → Fazendo → Em revisão → Feito), cada uma com responsável e prazo.
+- Tarefas como **issues** no GitHub Projects (A fazer → Fazendo → Feito), cada uma com responsável e prazo.
 
 ### Papéis rotativos (trocam a cada semana)
 - **Redator:** consolida o relatório.
-- **Revisor:** revisa os PRs e o relatório final.
+- **Revisor:** revisa o relatório final e o código da semana.
 - **Responsável técnico:** código e experimentos da semana.
 - **Apresentador:** apresenta quando houver apresentação.
 
