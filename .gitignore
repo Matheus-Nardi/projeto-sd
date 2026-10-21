@@ -1,0 +1,40 @@
+# Dados (nunca versionar; usar os scripts de download/geração)
+dados/
+data/
+*.csv.gz
+*.parquet
+
+# LaTeX: auxiliares de compilação
+*.aux
+*.bbl
+*.blg
+*.fdb_latexmk
+*.fls
+*.log
+*.out
+*.toc
+*.lof
+*.lot
+*.nav
+*.snm
+*.synctex.gz
+*.xdv
+build/
+
+# PDFs gerados (vão anexados na Release da semana)
+relatorios/semana-*/*.pdf
+apresentacoes/*/*.pdf
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# Infra
+.vagrant/
+
+# Sistema / editores
+.DS_Store
+.vscode/
+.idea/
