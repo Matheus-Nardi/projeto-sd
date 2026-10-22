@@ -11,6 +11,7 @@ Sistema mestre/workers (padrão MapReduce) para processamento de alto volume de 
 | Pasta | Conteúdo |
 |---|---|
 | `relatorios/` | `template/` com preâmbulo, capa, `dados.tex` e `referencias.bib` compartilhados; `pre-projeto/`; uma pasta por semana (`semana-XX/`) |
+| `apresentacoes/` | Slides em HTML/CSS: `template/` (estilo, navegação e `dados.js` da capa) e uma pasta por apresentação; abra o `index.html` no navegador |
 
 ## Relatórios em LaTeX
 
@@ -35,6 +36,7 @@ make assistir S=01          # recompila sozinho sempre que um .tex for salvo (Ct
 make todos                  # gera todos os relatórios
 make template               # gera o PDF do template, para conferir a capa
 make limpar                 # apaga arquivos auxiliares (.aux, .log...)
+make slides A=pre-projeto   # exporta apresentacoes/pre-projeto/ para PDF (precisa do Chrome ou Chromium)
 ```
 
 ### Passo a passo de um relatório semanal

@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pré-projeto</title>
+<link rel="stylesheet" href="../template/estilo.css">
+<style>
+  /* ---- Estilos só desta apresentação ---- */
+
+  /* Diagrama da arquitetura */
+  .no-dados { fill: var(--primaria-clara); stroke: var(--primaria); }
+  .no-mestre { fill: var(--acento-claro); stroke: var(--acento); }
+  .no-worker { fill: var(--secundaria-clara); stroke: var(--secundaria); }
+  .svg-linhas { stroke: var(--cinza); fill: none; }
+  .svg-seta, .svg-fraco { fill: var(--cinza); }
+  .svg-texto { fill: var(--texto); }
+
+  /* Linha do tempo estática × dinâmica */
+  .comparacao { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; }
+  .comparacao h3 { font-size: 24px; color: var(--primaria); margin-bottom: 14px; }
+  .linha { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; font-size: 18px; }
+  .linha .rot { width: 92px; color: var(--cinza); }
+  .trilha { position: relative; flex: 1; height: 38px; display: flex; gap: 3px; }
+  .bloco { background: var(--secundaria); border-radius: 4px; }
+  .bloco.lento { background: var(--acento); }
+  .ocioso {
+    border-radius: 4px;
+    background: repeating-linear-gradient(45deg, var(--ocioso) 0 6px, var(--ocioso-2) 6px 12px);
+    color: var(--cinza); font-size: 15px; display: grid; place-items: center;
+  }
+  .fim { font-size: 18px; margin-top: 6px; color: var(--cinza); }
+  .fim b { color: var(--texto); }
+  .legenda { display: flex; gap: 28px; font-size: 17px; color: var(--cinza); }
+  .legenda span::before {
+    content: ""; display: inline-block; width: 16px; height: 16px;
+    border-radius: 3px; margin-right: 8px; vertical-align: -2px; background: var(--c);
+  }
+
+
+  /* Métricas: pergunta em destaque + exemplo numérico */
+  .metricas .conteudo { gap: 16px; }
+  .metricas .cartao { padding: 16px 22px; font-size: 19px; }
+  .metricas .cartao h3 { font-size: 19px; margin-bottom: 4px; }
+  .pergunta { font-size: 25px; font-weight: 700; color: var(--texto); margin-bottom: 4px; }
+  .exemplo { color: var(--cinza); }
+  .exemplo b { color: var(--acento-texto); font-size: 22px; }
+  .metricas .destaque { font-size: 20px; padding: 12px 22px; }
+  .nota { font-size: 15px; color: var(--cinza); }
+
+  /* Slide com cartões e tabela juntos */
+  .compacto .sub { margin-bottom: 16px; }
+  .compacto .cartao { padding: 16px 20px; font-size: 18px; }
+  .compacto .cartao h3 { font-size: 20px; margin-bottom: 6px; }
+  .compacto td { padding: 8px 16px; }
+</style>
+</head>
+
+<!-- Só isto muda de uma apresentação para outra: título da entrega e data -->
+<body data-entrega="Pré-projeto" data-data="22/10/2026">
+<div class="palco">
+
+  <!-- 1. Capa -->
+  <section class="slide capa">
+    <div>
+      <img class="logo" data-dado="logo" alt="Logo da UNITINS">
+      <p class="inst"><span data-dado="instituicao"></span><br><span data-dado="curso-linha"></span></p>
+    </div>
+    <div>
+      <h1 data-dado="tituloprojeto"></h1>
+      <span class="entrega" data-dado="entrega"></span>
+    </div>
+    <div class="rodape">
+      <div>
+        <p class="rotulo">Integrantes</p>
+        <ul data-dado="integrantes"></ul>
+      </div>
+      <div class="dir">
+        <p><span class="rotulo">Professor:</span> <span data-dado="professor"></span></p>
+        <p data-dado="data"></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2. Problema e cenário -->
+  <section class="slide">
+    <h2>Problema e cenário</h2>
+    <p class="sub">Um dos quatro cenários propostos: processamento de grande volume de dados</p>
+    <div class="conteudo">
+      <div class="destaque">
+        Processar um conjunto de dados <strong>grande demais</strong> para uma máquina só em tempo razoável,
+        <strong>dividindo o trabalho</strong> entre várias máquinas que processam partes ao mesmo tempo
+        e depois <strong>combinam</strong> os resultados.
+      </div>
+      <ul class="lista">
+        <li><strong>Objetivo:</strong> construir um sistema mestre/workers e medir <em>speedup</em>,
+          balanceamento de carga e tolerância a falhas</li>
+        <li><strong>Caráter exploratório:</strong> o dataset e a pergunta que o sistema responde
+          ainda estão em análise</li>
+        <li><strong>Técnica primeiro, negócio depois:</strong> o núcleo não depende do tema dos dados</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- 3. Por que é distribuído -->
+  <section class="slide">
+    <h2>Por que é um problema distribuído?</h2>
+    <p class="sub">Uma máquina só tem limites; distribuir contorna esses limites, mas traz novos desafios</p>
+    <div class="conteudo">
+      <div class="cartoes c3">
+        <div class="cartao"><h3>CPU</h3>Poucos núcleos: o tempo cresce junto com o volume de dados</div>
+        <div class="cartao"><h3>Memória</h3>A partir de certo ponto, os dados nem cabem em uma máquina</div>
+        <div class="cartao"><h3>Disco</h3>A velocidade de leitura também limita o processamento</div>
+      </div>
+      <div class="cartoes c3">
+        <div class="cartao acento"><h3>Heterogeneidade</h3>Máquinas com desempenhos diferentes</div>
+        <div class="cartao acento"><h3>Falhas</h3>Um nó pode cair no meio da execução</div>
+        <div class="cartao acento"><h3>Comunicação</h3>Mandar dados pela rede tem custo</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. Arquitetura -->
+  <section class="slide">
+    <h2>Arquitetura mestre/workers</h2>
+    <p class="sub">Modelo MapReduce: dividir → processar em paralelo → combinar</p>
+    <div class="conteudo">
+      <svg viewBox="0 0 1120 360" width="1120" height="360" role="img"
+           aria-label="Dados de entrada vão ao mestre, que envia pedaços a N workers; os workers devolvem resultados parciais ao mestre, que produz a resposta final">
+        <defs>
+          <marker id="seta" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto">
+            <path d="M0,0 L10,5 L0,10 z" class="svg-seta"/>
+          </marker>
+        </defs>
+        <g class="svg-linhas" stroke-width="2.5" fill="none" marker-end="url(#seta)">
+          <line x1="150" y1="180" x2="205" y2="180"/>
+          <line x1="380" y1="180" x2="466" y2="60"/>
+          <line x1="380" y1="180" x2="466" y2="180"/>
+          <line x1="380" y1="180" x2="466" y2="300"/>
+          <line x1="640" y1="60" x2="726" y2="160"/>
+          <line x1="640" y1="180" x2="726" y2="180"/>
+          <line x1="640" y1="300" x2="726" y2="200"/>
+          <line x1="900" y1="180" x2="955" y2="180"/>
+        </g>
+        <g font-family="inherit" font-size="15" class="svg-fraco" text-anchor="middle">
+          <text x="412" y="105" transform="rotate(-54 412 105)">pedaço</text>
+          <text x="423" y="170">pedaço</text>
+          <text x="412" y="262" transform="rotate(54 412 262)">pedaço</text>
+          <text x="683" y="170">parcial</text>
+        </g>
+        <g font-family="inherit" text-anchor="middle">
+          <rect x="0" y="150" width="150" height="60" rx="10" class="no-dados" stroke-width="2"/>
+          <text x="75" y="186" font-size="19" class="svg-texto">Dados</text>
+
+          <rect x="210" y="140" width="170" height="80" rx="10" class="no-mestre" stroke-width="2"/>
+          <text x="295" y="175" font-size="22" font-weight="700" class="svg-texto">Mestre</text>
+          <text x="295" y="202" font-size="16" class="svg-fraco">divide os dados</text>
+
+          <rect x="470" y="30" width="170" height="60" rx="10" class="no-worker" stroke-width="2"/>
+          <text x="555" y="66" font-size="19" class="svg-texto">Worker 1</text>
+          <rect x="470" y="150" width="170" height="60" rx="10" class="no-worker" stroke-width="2"/>
+          <text x="555" y="186" font-size="19" class="svg-texto">Worker 2</text>
+          <rect x="470" y="270" width="170" height="60" rx="10" class="no-worker" stroke-width="2"/>
+          <text x="555" y="306" font-size="19" class="svg-texto">Worker N</text>
+          <text x="555" y="250" font-size="22" class="svg-fraco">⋮</text>
+
+          <rect x="730" y="140" width="170" height="80" rx="10" class="no-mestre" stroke-width="2"/>
+          <text x="815" y="175" font-size="22" font-weight="700" class="svg-texto">Mestre</text>
+          <text x="815" y="202" font-size="16" class="svg-fraco">agrega os parciais</text>
+
+          <rect x="960" y="150" width="160" height="60" rx="10" class="no-dados" stroke-width="2"/>
+          <text x="1040" y="186" font-size="19" class="svg-texto">Resposta</text>
+        </g>
+      </svg>
+      <p style="font-size:22px; color:var(--cinza)">
+        Os workers devolvem <strong>resultados parciais pequenos</strong> (uma soma, uma contagem),
+        nunca os dados brutos. Processamento em <strong>lote</strong>: começo, meio e fim.
+      </p>
+    </div>
+  </section>
+
+  <!-- 5. Estática × dinâmica -->
+  <section class="slide">
+    <h2>Divisão estática × fila dinâmica</h2>
+    <p class="sub">Como entregar os pedaços aos workers? O grupo vai comparar as duas formas</p>
+    <div class="conteudo">
+      <div class="comparacao">
+        <div>
+          <h3>Estática: N partes iguais</h3>
+          <div class="linha"><span class="rot">W1 (lento)</span>
+            <div class="trilha"><div class="bloco lento" style="width:100%"></div></div></div>
+          <div class="linha"><span class="rot">W2</span>
+            <div class="trilha"><div class="bloco" style="width:50%"></div><div class="ocioso" style="width:50%">ocioso</div></div></div>
+          <div class="linha"><span class="rot">W3</span>
+            <div class="trilha"><div class="bloco" style="width:50%"></div><div class="ocioso" style="width:50%">ocioso</div></div></div>
+          <p class="fim">Todos esperam o mais lento: <b>8 unidades de tempo</b></p>
+        </div>
+        <div>
+          <h3>Dinâmica: <em>self-scheduling</em></h3>
+          <div class="linha"><span class="rot">W1 (lento)</span>
+            <div class="trilha"><div class="bloco lento" style="width:25%"></div><div class="bloco lento" style="width:25%"></div><div class="ocioso" style="width:12.5%"></div></div></div>
+          <div class="linha"><span class="rot">W2</span>
+            <div class="trilha"><div class="bloco" style="width:12.5%"></div><div class="bloco" style="width:12.5%"></div><div class="bloco" style="width:12.5%"></div><div class="bloco" style="width:12.5%"></div><div class="bloco" style="width:12.5%"></div></div></div>
+          <div class="linha"><span class="rot">W3</span>
+            <div class="trilha"><div class="bloco" style="width:12.5%"></div><div class="bloco" style="width:12.5%"></div><div class="bloco" style="width:12.5%"></div><div class="bloco" style="width:12.5%"></div><div class="bloco" style="width:12.5%"></div></div></div>
+          <p class="fim">Quem termina pede o próximo pedaço: <b>5 unidades</b></p>
+        </div>
+      </div>
+      <div class="legenda">
+        <span style="--c:var(--secundaria)">worker normal</span>
+        <span style="--c:var(--acento)">worker lento (2× mais lento)</span>
+        <span style="--c:var(--ocioso)">tempo ocioso</span>
+        <span style="--c:transparent">Exemplo ilustrativo com 12 pedaços</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6. Datasets -->
+  <section class="slide compacto">
+    <h2>Exploração dos conjuntos de dados</h2>
+    <p class="sub">O dataset precisa se encaixar no paralelismo de dados</p>
+    <div class="conteudo">
+      <div class="cartoes c4">
+        <div class="cartao"><h3>Registros independentes</h3>Cada linha é processada sem olhar as outras</div>
+        <div class="cartao"><h3>Parcial combinável</h3>Soma, contagem, média (soma + contagem); mediana não</div>
+        <div class="cartao"><h3>Volume</h3>~100 MB para validar; 1 a 5 GB para os experimentos</div>
+        <div class="cartao"><h3>Aberto</h3>Download público, script de obtenção versionado</div>
+      </div>
+      <table>
+        <tr><th>Candidato</th><th>Pergunta possível</th><th>Processamento</th></tr>
+        <tr><td>Microdados do ENEM (INEP)</td><td>Média de notas por estado, escola ou renda</td><td>Agregação por grupo</td></tr>
+        <tr><td>NYC Taxi Trip Records</td><td>Corridas e receita por hora ou região</td><td>Agregação e filtragem</td></tr>
+        <tr><td><em>Dumps</em> da Wikipédia</td><td>Palavras mais frequentes</td><td>Contagem</td></tr>
+        <tr><td>Sintéticos (<em>seed</em> fixa)</td><td>Qualquer, com volume controlado</td><td>Qualquer</td></tr>
+      </table>
+    </div>
+  </section>
+
+  <!-- 7. Tecnologias -->
+  <section class="slide">
+    <h2>Tecnologias</h2>
+    <p class="sub">Comunicação com MPI; montagem do cluster automatizada</p>
+    <div class="conteudo">
+      <div class="cartoes c3">
+        <div class="cartao acento">
+<div class="icones"><span class="icone-rotulo"><img src="../template/img/icones/open-mpi.png" alt="Open MPI">Open MPI</span></div>
+          <h3>MPI</h3>
+          Padrão de troca de mensagens da computação em cluster.<br>
+          <code>scatter</code> espalha os pedaços, <code>gather</code> recolhe os resultados,
+          ponto a ponto para a fila dinâmica.
+        </div>
+        <div class="cartao">
+<div class="icones"><span class="icone-rotulo"><img src="../template/img/icones/vagrant.svg" alt="Vagrant">Vagrant</span><span class="icone-rotulo"><img src="../template/img/icones/virtualbox.svg" alt="VirtualBox">VirtualBox</span></div>
+          <h3>Vagrant + VirtualBox</h3>
+          <strong>Cria</strong> as VMs de validação no VirtualBox a partir de um <code>Vagrantfile</code>
+          versionado: rede interna, IPs fixos e SSH.
+        </div>
+        <div class="cartao secundaria">
+<div class="icones"><span class="icone-rotulo"><img src="../template/img/icones/ansible.svg" alt="Ansible">Ansible</span></div>
+          <h3>Ansible</h3>
+          <strong>Configura</strong> os nós: MPI, chaves SSH, hostfile e cópia do programa.
+          O mesmo playbook serve às VMs e aos notebooks.
+        </div>
+      </div>
+      <p style="font-size:21px; color:var(--cinza)">
+        Alternativas consideradas: sockets, gRPC e RabbitMQ. Para comparação: Dask, Ray ou Spark.
+      </p>
+    </div>
+  </section>
+
+  <!-- 8. Ambiente por etapa -->
+  <section class="slide">
+    <h2>Ambiente de execução</h2>
+    <p class="sub">VMs na mesma máquina dividem a CPU e distorcem o speedup: um ambiente por etapa</p>
+    <div class="conteudo">
+      <div class="cartoes c3">
+        <div class="cartao">
+<div class="icones"><span class="icone-rotulo"><img src="../template/img/icones/docker.svg" alt="Docker">Docker</span><span class="icone-rotulo"><img src="../template/img/icones/open-mpi.png" alt="Open MPI">Open MPI</span></div>
+          <h3>Desenvolvimento</h3>
+          Máquina local ou Docker<br><code>mpirun -n 4</code> já roda 4 processos
+        </div>
+        <div class="cartao acento">
+<div class="icones"><span class="icone-rotulo"><img src="../template/img/icones/vagrant.svg" alt="Vagrant">Vagrant</span><span class="icone-rotulo"><img src="../template/img/icones/virtualbox.svg" alt="VirtualBox">VirtualBox</span><span class="icone-rotulo"><img src="../template/img/icones/ubuntu.svg" alt="Ubuntu">Ubuntu</span></div>
+          <h3>Validação</h3>
+          VMs Ubuntu Server (1 mestre + 2 a 3 workers)<br>Rede e SSH reais; simular falhas desligando uma VM
+        </div>
+        <div class="cartao secundaria">
+<div class="icones"><span class="icone-rotulo"><img src="../template/img/icones/ubuntu.svg" alt="Ubuntu">Ubuntu</span><span class="icone-rotulo"><img src="../template/img/icones/ansible.svg" alt="Ansible">Ansible</span></div>
+          <h3>Medição</h3>
+          Notebooks físicos do grupo em rede<br>Speedup real, sem disputa de CPU
+        </div>
+      </div>
+      <div class="destaque">
+        <strong>Ubuntu Server</strong> em vez de distro de cluster (PelicanHPC): a distro só automatiza a
+        configuração do MPI; fazendo nós mesmos, temos mais controle e a montagem vira aprendizado.
+      </div>
+    </div>
+  </section>
+
+  <!-- 9. Métricas -->
+  <section class="slide metricas">
+    <h2>Como vamos saber se funcionou?</h2>
+    <p class="sub">Quatro perguntas, cada uma com uma métrica</p>
+    <div class="conteudo">
+      <div class="cartoes c2">
+        <div class="cartao">
+          <p class="pergunta">Ficou mais rápido?</p>
+          <h3>Speedup = tempo com 1 worker ÷ tempo com N</h3>
+          <p class="exemplo">Ex.: 100 s ÷ 30 s ≈ <b>3,3×</b> mais rápido com 4 workers</p>
+        </div>
+        <div class="cartao">
+          <p class="pergunta">Cada worker a mais valeu a pena?</p>
+          <h3>Eficiência = speedup ÷ nº de workers</h3>
+          <p class="exemplo">Ex.: 3,3 ÷ 4 ≈ <b>83%</b> do ganho ideal</p>
+        </div>
+        <div class="cartao acento">
+          <p class="pergunta">Alguém ficou parado esperando?</p>
+          <h3>Distribuição da carga</h3>
+          Quantos pedaços cada worker processou e quanto tempo ficou ocioso
+        </div>
+        <div class="cartao secundaria">
+          <p class="pergunta">A resposta está certa?</p>
+          <h3>Corretude</h3>
+          Mesmo resultado da versão sequencial, mesmo quando um worker cai
+        </div>
+      </div>
+      <div class="destaque">
+        <strong>Por que não 4× com 4 workers?</strong> Ler os dados, juntar os resultados e a rede
+        não ficam mais rápidos com mais workers. Essa parte limita o ganho (Lei de Amdahl).
+      </div>
+      <p class="nota">Números ilustrativos; os reais virão dos experimentos.</p>
+    </div>
+  </section>
+
+  <!-- 10. Experimentos -->
+  <section class="slide">
+    <h2>Experimentos planejados</h2>
+    <p class="sub">Todos rodados nos notebooks físicos</p>
+    <div class="conteudo">
+      <div class="cartoes c3">
+        <div class="cartao">
+          <p class="grande">1</p>
+          <h3>Escalabilidade</h3>
+          Tempo e speedup com 1, 2 e 4 workers. Efeito do tamanho do pedaço:
+          quando a comunicação passa a dominar?
+        </div>
+        <div class="cartao acento">
+          <p class="grande">2</p>
+          <h3>Estática × dinâmica</h3>
+          Cluster heterogêneo (máquinas diferentes ou atraso artificial):
+          tempo total, pedaços por worker e ociosidade.
+        </div>
+        <div class="cartao secundaria">
+          <p class="grande">3</p>
+          <h3>Tolerância a falhas</h3>
+          Derrubar um worker no meio da execução e verificar se o mestre
+          reatribui o pedaço dele.
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 11. Cronograma -->
+  <section class="slide">
+    <h2>Cronograma</h2>
+    <p class="sub">Entregas semanais às quintas; semanas 1 e 2 em paralelo para ganhar folga</p>
+    <div class="conteudo">
+      <table>
+        <tr><th>Etapa</th><th>Entrega</th><th>Data</th></tr>
+        <tr class="marcado"><td>Pré-projeto</td><td>Apresentação da proposta</td><td class="data">22/10/2026</td></tr>
+        <tr><td>Semana 1</td><td>Análise dos datasets; escolha do dataset e da pergunta</td><td class="data">29/10/2026</td></tr>
+        <tr><td>Semana 2</td><td>Cluster de validação (VMs, Vagrant e Ansible)</td><td class="data">05/11/2026</td></tr>
+        <tr><td>Semana 3</td><td>Versão sequencial de referência + primeira versão distribuída (estática)</td><td class="data">12/11/2026</td></tr>
+        <tr><td>Semana 4</td><td>Fila dinâmica + experimento de escalabilidade</td><td class="data">19/11/2026</td></tr>
+        <tr><td>Semana 5</td><td>Tolerância a falhas + experimento estático × dinâmico</td><td class="data">26/11/2026</td></tr>
+        <tr><td>Final</td><td>Consolidação dos resultados e apresentação final</td><td class="data">03/12/2026</td></tr>
+      </table>
+    </div>
+  </section>
+
+  <!-- 12. Papéis -->
+  <section class="slide">
+    <h2>Divisão de papéis</h2>
+    <p class="sub">Papéis fixos por frente: sem tempo de adaptação a cada semana</p>
+    <div class="conteudo">
+      <div class="cartoes c3">
+        <div class="cartao">
+          <h3>Dados e documentação</h3>
+          Preparo dos datasets, consolidação dos relatórios, slides e registro das decisões
+        </div>
+        <div class="cartao acento">
+          <h3>Desenvolvimento</h3>
+          Código MPI (mestre, workers, fila dinâmica, falhas) e versão sequencial de referência
+        </div>
+        <div class="cartao secundaria">
+          <h3>Infraestrutura e experimentos</h3>
+          Vagrant, Ansible e cluster; execução dos experimentos e coleta de métricas
+        </div>
+      </div>
+      <div class="destaque">
+        O papel indica <strong>quem responde</strong> pela frente, não um limite: todos participam um pouco de tudo.
+        Trabalho versionado em <code>github.com/Matheus-Nardi/projeto-sd</code>.
+      </div>
+    </div>
+  </section>
+
+  <!-- 13. Riscos -->
+  <section class="slide">
+    <h2>Riscos e desafios</h2>
+    <p class="sub">E como pretendemos lidar com cada um</p>
+    <div class="conteudo">
+      <table>
+        <tr><th style="width:28%">Risco</th><th>Mitigação</th></tr>
+        <tr><td>Máquinas heterogêneas</td><td>Fila dinâmica de tarefas</td></tr>
+        <tr><td>Falha de workers</td><td>Mestre registra os pedaços de cada worker e reatribui os de quem parar de responder</td></tr>
+        <tr><td>Custo de comunicação</td><td>Medir o efeito do tamanho do pedaço</td></tr>
+        <tr><td>Configuração do ambiente</td><td>Automação com Vagrant + Ansible; começar em uma máquina só</td></tr>
+        <tr><td>Prazo curto</td><td>Priorizar speedup e estática × dinâmica; simplificar a tolerância a falhas se apertar</td></tr>
+      </table>
+    </div>
+  </section>
+
+  <!-- 14. Encerramento -->
+  <section class="slide final">
+    <h2>Obrigado!</h2>
+    <p>Dúvidas e sugestões?</p>
+    <p>github.com/Matheus-Nardi/projeto-sd</p>
+  </section>
+
+  <div class="progresso"></div>
+</div>
+
+<script src="../template/dados.js"></script>
+<script src="../template/slides.js"></script>
+</body>
+</html>

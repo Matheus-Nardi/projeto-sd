@@ -1,0 +1,233 @@
+/* =============================================================
+   Estilo comum a todas as apresentações.
+   Slides de 1280×720 (16:9), escalados para a janela pelo slides.js.
+   Paleta azul-petróleo + coral: petróleo (dados e títulos),
+   coral (mestre e destaques) e verde-azulado (workers).
+   Fontes do sistema: funciona sem internet na sala de aula.
+   ============================================================= */
+
+:root {
+  /* Papéis das cores (os diagramas usam: primária = dados,
+     acento = mestre, secundária = workers) */
+  --primaria: #12455a;
+  --primaria-clara: #e2eef2;
+  --acento: #e85d3f;
+  --acento-claro: #fde3dc;
+  --acento-texto: #d4472a;   /* acento usado como cor de texto */
+  --sobre-acento: #ffffff;   /* texto em cima do acento */
+  --secundaria: #2a9d8f;
+  --secundaria-clara: #dcf2ef;
+  --cinza: #5b6472;
+  --cartao: #f2f5f6;
+  --texto: #1d2430;
+  --fundo: #ffffff;
+  --linha: #d8dde4;
+  --zebra: #f7f8fa;
+  --ocioso: #e3e6ea;
+  --ocioso-2: #f4f5f7;
+  --externo: #11161f;        /* em volta do slide */
+  --fonte: "Inter", "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+  --mono: "JetBrains Mono", "Fira Code", Consolas, monospace;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+  height: 100%;
+  overflow: hidden;
+  background: var(--externo);
+  font-family: var(--fonte);
+  color: var(--texto);
+}
+
+.palco {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 1280px;
+  height: 720px;
+  transform-origin: center;
+  background: var(--fundo);
+  overflow: hidden;
+}
+
+.progresso {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  height: 5px;
+  background: var(--acento);
+  transition: width 0.3s ease;
+  z-index: 10;
+}
+
+/* ---- Slide genérico ------------------------------------------ */
+.slide {
+  position: absolute;
+  inset: 0;
+  padding: 56px 80px 60px;
+  display: none;
+  flex-direction: column;
+}
+.slide.ativo { display: flex; animation: entra 0.35s ease; }
+@keyframes entra { from { opacity: 0; transform: translateY(8px); } }
+
+.slide h2 {
+  font-size: 40px;
+  font-weight: 700;
+  color: var(--primaria);
+  margin-bottom: 8px;
+}
+.slide h2::after {
+  content: "";
+  display: block;
+  width: 64px;
+  height: 5px;
+  margin-top: 12px;
+  background: var(--acento);
+  border-radius: 3px;
+}
+.slide .sub {
+  font-size: 22px;
+  color: var(--cinza);
+  margin-bottom: 28px;
+}
+.slide .conteudo {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 24px;
+  font-size: 26px;
+  line-height: 1.4;
+}
+
+.numero {
+  position: absolute;
+  right: 40px;
+  bottom: 22px;
+  font-size: 15px;
+  color: var(--cinza);
+}
+
+ul.lista { list-style: none; display: flex; flex-direction: column; gap: 18px; }
+ul.lista li { padding-left: 34px; position: relative; }
+ul.lista li::before {
+  content: "";
+  position: absolute;
+  left: 4px;
+  top: 0.5em;
+  width: 12px;
+  height: 12px;
+  border-radius: 3px;
+  background: var(--acento);
+}
+
+strong { color: var(--primaria); }
+em { font-style: italic; }
+code { font-family: var(--mono); font-size: 0.9em; background: var(--cartao); padding: 1px 8px; border-radius: 5px; }
+
+.destaque {
+  background: var(--primaria-clara);
+  border-left: 6px solid var(--primaria);
+  padding: 18px 26px;
+  border-radius: 6px;
+  font-size: 24px;
+}
+
+/* ---- Grades de cartões --------------------------------------- */
+.cartoes { display: grid; gap: 24px; }
+.cartoes.c2 { grid-template-columns: repeat(2, 1fr); }
+.cartoes.c3 { grid-template-columns: repeat(3, 1fr); }
+.cartoes.c4 { grid-template-columns: repeat(4, 1fr); }
+.cartao {
+  background: var(--cartao);
+  border-radius: 12px;
+  padding: 24px 26px;
+  font-size: 21px;
+  line-height: 1.4;
+  border-top: 6px solid var(--primaria);
+}
+.cartao h3 { font-size: 24px; color: var(--primaria); margin-bottom: 10px; }
+.cartao .grande { font-size: 40px; font-weight: 700; color: var(--primaria); line-height: 1.1; margin-bottom: 6px; }
+.cartao.acento { border-top-color: var(--acento); }
+.cartao.secundaria { border-top-color: var(--secundaria); }
+
+/* ---- Ícones das tecnologias (logos em template/img/icones/) - */
+.icones { display: flex; gap: 14px; align-items: center; margin-bottom: 14px; }
+.icones img { height: 48px; width: auto; }
+.icone-rotulo { display: flex; flex-direction: column; align-items: center; gap: 6px; font-size: 15px; color: var(--cinza); }
+
+/* ---- Tabelas -------------------------------------------------- */
+table { border-collapse: collapse; width: 100%; font-size: 21px; }
+th {
+  text-align: left;
+  background: var(--primaria);
+  color: #ffffff;
+  padding: 12px 16px;
+  font-weight: 600;
+}
+td { padding: 11px 16px; border-bottom: 1px solid var(--linha); vertical-align: top; }
+tr:nth-child(even) td { background: var(--zebra); }
+td.data { white-space: nowrap; font-variant-numeric: tabular-nums; color: var(--cinza); }
+tr.marcado td { background: var(--acento-claro); font-weight: 600; }
+
+/* ---- Capa ---------------------------------------------------- */
+.slide.capa {
+  padding: 48px 80px;
+  align-items: center;
+  text-align: center;
+  justify-content: space-between;
+  background:
+    linear-gradient(180deg, transparent 0 82%, var(--primaria-clara) 82%),
+    var(--fundo);
+}
+.capa .logo { height: 96px; }
+.capa .inst { font-size: 20px; color: var(--cinza); margin-top: 10px; line-height: 1.5; }
+.capa h1 { font-size: 44px; color: var(--primaria); line-height: 1.2; max-width: 1000px; }
+.capa .entrega {
+  display: inline-block;
+  margin-top: 18px;
+  font-size: 26px;
+  font-weight: 600;
+  color: var(--sobre-acento);
+  background: var(--acento);
+  padding: 6px 24px;
+  border-radius: 30px;
+}
+.capa .rodape {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  align-items: flex-end;
+  font-size: 19px;
+  text-align: left;
+}
+.capa .rodape ul { list-style: none; line-height: 1.45; }
+.capa .rodape .rotulo { font-weight: 700; color: var(--primaria); margin-bottom: 4px; }
+.capa .rodape .dir { text-align: right; }
+
+/* ---- Slide de seção / encerramento --------------------------- */
+.slide.final {
+  background: var(--primaria);
+  color: white;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 20px;
+}
+.slide.final h2 { color: white; font-size: 60px; }
+.slide.final h2::after { margin: 16px auto 0; }
+.slide.final, .slide.final h2 { color: #ffffff; }
+.slide.final p { font-size: 24px; opacity: 0.85; }
+.slide.final .numero { color: #ffffff; opacity: 0.6; }
+
+/* ---- Impressão: um slide por página (Ctrl+P → Salvar como PDF) - */
+@media print {
+  @page { size: 1280px 720px; margin: 0; }
+  html, body { overflow: visible; height: auto; background: white; }
+  .palco { position: static; transform: none !important; overflow: visible; height: auto; }
+  .slide, .slide.ativo { display: flex !important; position: relative; height: 720px; page-break-after: always; animation: none; }
+  .progresso { display: none; }
+  * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+}

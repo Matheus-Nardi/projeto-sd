@@ -118,10 +118,13 @@ projeto-sd/
 ├── ideia.md                # este arquivo: contexto e decisões
 ├── Makefile                # build dos relatórios (make ajuda)
 ├── .gitignore              # ignora auxiliares do LaTeX e a pasta de dados
-└── relatorios/
-    ├── template/           # preâmbulo, capa, dados.tex (dados compartilhados), referencias.bib, img/logo, main.tex modelo e secoes/
-    ├── pre-projeto/        # relatório do pré-projeto (make pre-projeto); segue o roteiro abaixo, não as 7 seções semanais
-    └── semana-XX/          # criado com make novo-relatorio S=XX
+├── relatorios/
+│   ├── template/           # preâmbulo, capa, dados.tex (dados compartilhados), referencias.bib, img/logo, main.tex modelo e secoes/
+│   ├── pre-projeto/        # relatório do pré-projeto (make pre-projeto); segue o roteiro abaixo, não as 7 seções semanais
+│   └── semana-XX/          # criado com make novo-relatorio S=XX
+└── apresentacoes/
+    ├── template/           # estilo.css, slides.js, dados.js (dados da capa)
+    └── pre-projeto/        # index.html (abrir no navegador)
 ```
 
 ### Padrão de relatórios (LaTeX)
@@ -148,8 +151,10 @@ projeto-sd/
 - Nomenclatura de arquivos: minúsculas, sem acento.
 
 ### Padrão de slides
-- Beamer (mesmo preâmbulo e cores dos relatórios) ou template HTML versionado. _[A DEFINIR]_
-- Fixar: capa (reaproveitando `relatorios/template/dados.tex` e o logo), sequência de seções, paleta, fonte, estilo de diagrama e pouco texto por slide.
+- **Decidido (21/10/2026): HTML + CSS versionados**, sem dependências externas (abre direto no navegador, funciona sem internet na sala).
+  - Template em `apresentacoes/template/`: `estilo.css` (paleta azul-petróleo + coral: petróleo = dados e títulos, coral = mestre e destaques, verde-azulado = workers; cores só em variáveis no `:root`; fontes do sistema), `slides.js` (navegação) e `dados.js` (dados da capa, equivalente ao `dados.tex`; **mudou um, mude o outro**). O logo é o mesmo de `relatorios/template/img/`. Logos das tecnologias em `apresentacoes/template/img/icones/` (SVGs do Simple Icons 11.0.0 com a cor oficial; Open MPI do site oficial), salvos localmente para funcionar sem internet.
+  - Cada apresentação é uma pasta `apresentacoes/<nome>/index.html` que define só `data-entrega` e `data-data` no `<body>`.
+  - Slides de 1280×720 (16:9), pouco texto por slide. Navegação: setas/espaço/clique; `F` tela cheia; PDF com `make slides A=<nome>` (Chrome/Chromium sem janela; um slide por página, gera `apresentacoes/<nome>/<nome>.pdf`, versionado como os PDFs dos relatórios). Sem `make`, `Ctrl+P` → "Salvar como PDF" no Chrome dá o mesmo resultado.
 
 ## Próximos passos
 

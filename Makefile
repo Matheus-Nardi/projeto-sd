@@ -12,6 +12,10 @@ RELATORIOS := $(filter-out $(TEMPLATE),$(patsubst %/main.tex,%,$(wildcard $(RELD
 SEMANAS    := $(filter $(RELDIR)/semana-%,$(RELATORIOS))
 PREPROJETO := $(RELDIR)/pre-projeto
 
+# Apresentações em HTML: exportadas para PDF com o Chrome/Chromium sem janela
+APRDIR     := apresentacoes
+CHROME     := $(shell command -v google-chrome-stable || command -v google-chrome || command -v chromium || command -v chromium-browser)
+
 # compila(pasta, nome-do-pdf): gera <pasta>/<nome>.pdf e apaga os auxiliares
 define compila
 	@echo ">> Compilando $(1)/main.tex -> $(1)/$(2).pdf"
@@ -22,7 +26,7 @@ define compila
 	@echo "OK: $(1)/$(2).pdf"
 endef
 
-.PHONY: ajuda relatorio novo-relatorio pre-projeto todos template assistir limpar checa-s
+.PHONY: ajuda relatorio novo-relatorio pre-projeto todos template assistir limpar checa-s slides
 
 ajuda:
 	@echo "Uso (sempre na raiz do repositório):"
@@ -34,6 +38,7 @@ ajuda:
 	@echo "  make todos                    gera todos os relatórios"
 	@echo "  make template                 gera o PDF do template (para conferir a capa)"
 	@echo "  make limpar                   apaga arquivos auxiliares do LaTeX"
+	@echo "  make slides A=pre-projeto     gera apresentacoes/pre-projeto/pre-projeto.pdf (precisa do Chrome ou Chromium)"
 	@echo ""
 	@echo "Relatórios encontrados: $(or $(RELATORIOS),nenhum)"
 
@@ -53,6 +58,15 @@ relatorio: checa-s
 
 assistir: checa-s
 	cd $(RELDIR)/semana-$(S) && latexmk -pdf -pvc -interaction=nonstopmode -jobname=relatorio-semana-$(S) main.tex
+
+slides:
+	@test -n "$(A)" || { echo "!! Informe a apresentação, ex.: make slides A=pre-projeto"; exit 1; }
+	@test -f $(APRDIR)/$(A)/index.html || { echo "!! Não existe $(APRDIR)/$(A)/index.html"; exit 1; }
+	@test -n "$(CHROME)" || { echo "!! Instale o Google Chrome ou o Chromium para exportar o PDF"; exit 1; }
+	@echo ">> Exportando $(APRDIR)/$(A)/index.html -> $(APRDIR)/$(A)/$(A).pdf"
+	@"$(CHROME)" --headless=new --disable-gpu --no-pdf-header-footer --virtual-time-budget=3000 \
+		--print-to-pdf="$(CURDIR)/$(APRDIR)/$(A)/$(A).pdf" "file://$(CURDIR)/$(APRDIR)/$(A)/index.html" >/dev/null 2>&1
+	@echo "OK: $(APRDIR)/$(A)/$(A).pdf"
 
 pre-projeto:
 	$(call compila,$(PREPROJETO),pre-projeto)
