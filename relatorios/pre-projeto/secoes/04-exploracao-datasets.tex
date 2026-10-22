@@ -1,0 +1,53 @@
+\section{Exploração dos conjuntos de dados}
+\label{sec:datasets}
+
+O dataset precisa, antes de tudo, \textbf{se encaixar no paralelismo de
+dados}. Os critérios de escolha são:
+
+\begin{enumerate}
+  \item \textbf{Registros independentes:} cada linha pode ser processada
+    sem olhar as outras, o que permite cortar os dados em pedaços de
+    qualquer tamanho.
+  \item \textbf{Resultado parcial combinável:} soma, contagem, mínimo e
+    máximo se combinam diretamente; a média também, se cada worker devolver
+    soma e contagem. Já a \emph{mediana} não pode ser obtida das medianas
+    dos pedaços, um exemplo dos limites do modelo.
+  \item \textbf{Volume suficiente:} cerca de 100\,MB para validar e de 1 a
+    5\,GB para os experimentos; abaixo disso, o custo de distribuir supera
+    o ganho.
+  \item \textbf{Acesso aberto e reprodutível:} download público, com o
+    script de obtenção versionado no repositório.
+\end{enumerate}
+
+\begin{table}[H]
+  \centering
+  \small
+  \begin{tabularx}{\textwidth}{>{\raggedright}p{2.8cm}X>{\raggedright\arraybackslash}p{3cm}}
+    \toprule
+    \textbf{Dataset} & \textbf{Perguntas possíveis} & \textbf{Processamento} \\
+    \midrule
+    Microdados do ENEM (INEP)~\cite{enem} &
+      Média de notas por estado, tipo de escola ou faixa de renda &
+      Agregação por grupo \\
+    NYC Taxi Trip Records~\cite{nyctaxi} &
+      Corridas e receita por hora do dia ou por região &
+      Agregação e filtragem \\
+    \emph{Dumps} da Wikipédia &
+      Palavras mais frequentes &
+      Contagem (\emph{word count}) \\
+    Dados sintéticos (\emph{seed} fixa) &
+      Qualquer, com volume controlado &
+      Qualquer \\
+    \bottomrule
+  \end{tabularx}
+  \caption{Datasets candidatos.}
+\end{table}
+
+O grupo priorizou \textbf{primeiro a técnica e depois o negócio}: o núcleo
+do trabalho (distribuição, agregação e medições) não depende do tema dos
+dados, desde que o dataset atenda aos critérios acima. Por isso, o
+desenvolvimento pode começar com dados sintéticos enquanto os candidatos
+reais são analisados. O dataset ainda será decidido; a tendência é
+combinar dados reais, que dão sentido à pergunta, com sintéticos, que
+permitem variar o volume nos experimentos de escala. Os dados não serão
+versionados no Git, apenas os scripts que os obtêm ou geram.

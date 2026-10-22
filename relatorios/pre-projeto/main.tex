@@ -1,0 +1,28 @@
+\documentclass[12pt]{article}
+\input{../template/preambulo}
+
+% ---- Só isto muda de um relatório para outro ----------------
+% (sem \numerosemana: o pré-projeto não é uma entrega semanal)
+\newcommand{\tituloentrega}{Pré-projeto}
+\newcommand{\dataentrega}{22/10/2026}
+% -------------------------------------------------------------
+
+\begin{document}
+\input{../template/capa}
+
+\tableofcontents
+\newpage
+
+\input{secoes/01-problema-e-cenario}
+\input{secoes/02-por-que-distribuido}
+\input{secoes/03-arquitetura}
+\input{secoes/04-exploracao-datasets}
+\input{secoes/05-exploracao-ambiente}
+\input{secoes/06-metricas}
+\input{secoes/07-cronograma}
+\input{secoes/08-papeis}
+\input{secoes/09-riscos}
+
+\bibliographystyle{plain}
+\bibliography{../template/referencias}
+\end{document}

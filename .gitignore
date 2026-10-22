@@ -37,3 +37,6 @@ venv/
 
 # PDF de conferência do template (make template)
 relatorios/template/template.pdf
+
+# PDF gerado pelo editor ao compilar main.tex direto (o oficial é o do make)
+relatorios/*/main.pdf

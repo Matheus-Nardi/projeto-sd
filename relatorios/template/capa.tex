@@ -1,5 +1,6 @@
 % Capa padrão: usa os dados de dados.tex e os de cada relatório
 % (\numerosemana, \tituloentrega, \dataentrega).
+% Sem \numerosemana (ex.: pré-projeto), a linha "Semana XX" é omitida.
 \begin{titlepage}
   \centering
   \includegraphics[width=0.45\textwidth]{\logo}\par
@@ -10,9 +11,7 @@
   {\LARGE\bfseries \tituloprojeto\par}
   \vspace{0.8cm}
   {\Large \tituloentrega\par}
-  {\large Semana \numerosemana\par}
-  \vspace{0.8cm}
-  \textbf{Cenário:} \cenario\par
+  \ifdefined\numerosemana {\large Semana \numerosemana\par}\fi
   \vfill
   \textbf{Integrantes}\par
   \vspace{0.2cm}

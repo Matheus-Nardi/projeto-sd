@@ -1,0 +1,52 @@
+\section{Ambiente e tecnologias}
+\label{sec:ambiente}
+
+\paragraph{Distribuição Linux.} Existem distribuições próprias para
+clusters, como a \textbf{\mbox{PelicanHPC}}~\cite{pelicanhpc}, que traz o MPI
+pronto e dá boot nos workers pela rede. Porém, uma distribuição de cluster
+não faz o paralelismo nem divide os dados, tarefa do programa do grupo: ela
+apenas deixa pronta a configuração de que o MPI precisa (o mesmo MPI em
+todos os nós, rede, SSH sem senha entre eles e a lista de máquinas). Como
+essa configuração pode ser automatizada, o grupo optou pelo
+\textbf{Ubuntu Server}, uma distribuição de uso geral, como costuma
+ocorrer em clusters reais. Isso dá mais controle sobre cada peça e torna a
+montagem do cluster parte do aprendizado.
+
+\paragraph{Ambiente por etapa.} Docker e VMs são práticos, mas executam
+tudo sobre o mesmo hardware: com quatro VMs em um notebook de quatro
+núcleos, o ganho medido não representa um cluster real. Por isso, cada
+ambiente foi atribuído à etapa em que é mais útil:
+
+\begin{table}[H]
+  \centering
+  \small
+  \begin{tabularx}{\textwidth}{>{\raggedright}p{2.9cm}>{\raggedright}p{4.0cm}X}
+    \toprule
+    \textbf{Etapa} & \textbf{Ambiente} & \textbf{Objetivo} \\
+    \midrule
+    Desenvolvimento & Máquina local ou Docker &
+      Escrever e depurar o código \\
+    Validação & VMs com Ubuntu Server, sem interface gráfica &
+      Testar com rede e SSH reais e simular falhas desligando uma VM \\
+    Medição & Notebooks físicos do grupo em rede &
+      Medir o \emph{speedup} real, sem disputa de CPU \\
+    \bottomrule
+  \end{tabularx}
+  \caption{Ambiente de cada etapa do projeto.}
+\end{table}
+
+\paragraph{Automação.} O \textbf{Vagrant} cria as VMs, e o
+\textbf{Ansible} configura os nós (MPI, chaves SSH, lista de máquinas e
+cópia do programa). O mesmo \emph{playbook} do Ansible configura as VMs e
+os notebooks, bastando trocar a lista de máquinas, o que garante a mesma
+configuração na validação e na medição. O grupo já usou o Ansible em
+outras disciplinas.
+
+\paragraph{Comunicação.} A tecnologia escolhida é o \textbf{MPI}
+(\emph{Message Passing Interface}), padrão de troca de mensagens em
+computação paralela, disponível em Python pela biblioteca
+\texttt{mpi4py}. Ele oferece as operações \texttt{scatter} e
+\texttt{gather}, que espalham os pedaços e recolhem os resultados, e
+mensagens ponto a ponto para a fila dinâmica. Sockets, gRPC e filas de
+mensagens (RabbitMQ) foram considerados, mas o MPI é o padrão da
+computação em cluster e já cobre o que o modelo precisa.

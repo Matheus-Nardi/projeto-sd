@@ -1,0 +1,28 @@
+\section{Métricas de sucesso e experimentos planejados}
+\label{sec:metricas}
+
+\begin{description}
+  \item[\emph{Speedup}:] $S = T_1 / T_N$, razão entre o tempo com 1 worker
+    e com $N$ workers. O ideal seria $S = N$, mas a parte que não se
+    paraleliza (ler os dados, agregar, comunicar) limita o ganho (Lei de
+    Amdahl).
+  \item[Eficiência:] $E = S / N$, quanto de cada worker adicional é
+    aproveitado.
+  \item[Distribuição da carga:] pedaços processados e tempo ocioso de
+    cada worker.
+  \item[Corretude:] o resultado distribuído deve ser idêntico ao de uma
+    execução sequencial de referência, inclusive quando um worker falha.
+\end{description}
+
+Experimentos planejados:
+
+\begin{enumerate}
+  \item \textbf{Escalabilidade:} tempo e \emph{speedup} com 1, 2 e 4
+    workers, e o efeito do tamanho do pedaço, para identificar quando a
+    comunicação passa a dominar.
+  \item \textbf{Estática $\times$ dinâmica} em um cluster heterogêneo
+    (máquinas diferentes ou atraso artificial em um worker): tempo total,
+    pedaços por worker e ociosidade.
+  \item \textbf{Tolerância a falhas:} derrubar um worker no meio da
+    execução e verificar se o mestre reatribui o pedaço dele.
+\end{enumerate}

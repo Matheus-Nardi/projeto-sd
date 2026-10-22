@@ -1,0 +1,13 @@
+\section{Por que é um problema distribuído}
+
+Uma única máquina tem limites de processamento (núcleos de CPU), de memória
+e de leitura em disco. Quando o volume de dados cresce, o tempo de
+processamento cresce junto e, a partir de certo ponto, os dados nem cabem
+na memória de uma máquina só. Distribuir o processamento contorna esses
+limites: cada máquina recebe uma parte dos dados, e o trabalho total é
+feito em paralelo.
+
+A distribuição, porém, traz desafios que não existem em uma máquina só:
+máquinas com desempenho diferente, falhas durante a execução e o custo de
+mandar dados pela rede. Esses desafios são o foco dos experimentos
+planejados (Seção~\ref{sec:metricas}).

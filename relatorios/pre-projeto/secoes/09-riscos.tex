@@ -1,0 +1,18 @@
+\section{Riscos e desafios}
+
+\begin{description}
+  \item[Máquinas heterogêneas:] na divisão estática, o worker mais lento
+    determina o tempo total. \emph{Mitigação:} fila dinâmica de tarefas.
+  \item[Falha de workers:] um nó pode cair no meio da execução.
+    \emph{Mitigação:} o mestre registra os pedaços de cada worker e
+    reatribui os de quem parar de responder.
+  \item[Custo de comunicação:] pedaços pequenos demais fazem a rede
+    superar o ganho do paralelismo. \emph{Mitigação:} medir o efeito do
+    tamanho do pedaço.
+  \item[Configuração do ambiente:] MPI, SSH e rede entre notebooks podem
+    tomar mais tempo que o previsto. \emph{Mitigação:} automação com
+    Vagrant e Ansible e desenvolvimento inicial em uma máquina só.
+  \item[Prazo curto:] seis semanas com pouca folga. \emph{Mitigação:}
+    priorizar o \emph{speedup} e a comparação estática $\times$ dinâmica,
+    simplificando a tolerância a falhas se necessário.
+\end{description}

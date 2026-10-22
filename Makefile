@@ -9,6 +9,8 @@ TEMPLATE  := $(RELDIR)/template
 
 # Todas as pastas de relatório que têm um main.tex (exceto o template)
 RELATORIOS := $(filter-out $(TEMPLATE),$(patsubst %/main.tex,%,$(wildcard $(RELDIR)/*/main.tex)))
+SEMANAS    := $(filter $(RELDIR)/semana-%,$(RELATORIOS))
+PREPROJETO := $(RELDIR)/pre-projeto
 
 # compila(pasta, nome-do-pdf): gera <pasta>/<nome>.pdf e apaga os auxiliares
 define compila
@@ -20,13 +22,14 @@ define compila
 	@echo "OK: $(1)/$(2).pdf"
 endef
 
-.PHONY: ajuda relatorio novo-relatorio todos template assistir limpar checa-s
+.PHONY: ajuda relatorio novo-relatorio pre-projeto todos template assistir limpar checa-s
 
 ajuda:
 	@echo "Uso (sempre na raiz do repositório):"
 	@echo ""
 	@echo "  make novo-relatorio S=01      cria relatorios/semana-01/ a partir do template"
 	@echo "  make relatorio S=01           gera relatorios/semana-01/relatorio-semana-01.pdf"
+	@echo "  make pre-projeto              gera relatorios/pre-projeto/pre-projeto.pdf"
 	@echo "  make assistir S=01            recompila sozinho a cada vez que um .tex é salvo"
 	@echo "  make todos                    gera todos os relatórios"
 	@echo "  make template                 gera o PDF do template (para conferir a capa)"
@@ -51,11 +54,15 @@ relatorio: checa-s
 assistir: checa-s
 	cd $(RELDIR)/semana-$(S) && latexmk -pdf -pvc -interaction=nonstopmode -jobname=relatorio-semana-$(S) main.tex
 
+pre-projeto:
+	$(call compila,$(PREPROJETO),pre-projeto)
+
 template:
 	$(call compila,$(TEMPLATE),template)
 
 todos:
-	@$(foreach d,$(RELATORIOS),$(MAKE) --no-print-directory relatorio S=$(patsubst $(RELDIR)/semana-%,%,$(d)) || exit 1;)
+	@$(if $(wildcard $(PREPROJETO)/main.tex),$(MAKE) --no-print-directory pre-projeto || exit 1;)
+	@$(foreach d,$(SEMANAS),$(MAKE) --no-print-directory relatorio S=$(patsubst $(RELDIR)/semana-%,%,$(d)) || exit 1;)
 
 limpar:
 	@for d in $(TEMPLATE) $(RELATORIOS); do (cd $$d && latexmk -c >/dev/null 2>&1; rm -f *.aux *.log *.fls *.fdb_latexmk *.out *.toc *.synctex.gz); done

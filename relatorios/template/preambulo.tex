@@ -9,8 +9,28 @@
 \usepackage[a4paper,margin=2.5cm]{geometry}
 \usepackage{graphicx}
 \usepackage{xcolor}
+\usepackage{float}
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{tikz}
+\usetikzlibrary{positioning,arrows.meta}
 \usepackage[hidelinks]{hyperref}
 
 \graphicspath{{../template/img/}{img/}}
 
+% Data de hoje no formato dd/mm/aaaa (o \today do babel sai por extenso)
+\newcommand{\hoje}{\ifnum\day<10 0\fi\the\day/\ifnum\month<10 0\fi\the\month/\the\year}
+
+% Marca visível para o que o grupo ainda não decidiu
+\newcommand{\adefinir}[1]{\textcolor{red}{\textbf{[A DEFINIR: #1]}}}
+
 \input{../template/dados}
+
+% Metadados do PDF (título da janela do leitor), a partir de dados.tex e
+% do \tituloentrega de cada relatório
+\pdfstringdefDisableCommands{\def\\{,}}
+\AtBeginDocument{\hypersetup{
+  pdftitle={\tituloprojeto{} -- \tituloentrega\ifdefined\numerosemana{} \numerosemana\fi},
+  pdfauthor={\integrantes},
+  pdfsubject={\disciplina{} -- \instituicao}
+}}

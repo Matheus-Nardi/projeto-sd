@@ -1,0 +1,20 @@
+\section{Problema e cenário escolhido}
+
+Entre os quatro cenários propostos pelo professor, o grupo escolheu o de
+\textbf{processamento distribuído de grande volume de dados com arquitetura
+mestre/workers}. O problema é processar um conjunto de dados grande demais
+para ser tratado por uma única máquina em tempo razoável, dividindo o
+trabalho entre várias máquinas que processam partes dos dados ao mesmo
+tempo e depois combinam seus resultados.
+
+\paragraph{Objetivo.} Construir um sistema mestre/workers que distribua o
+processamento de um grande volume de dados entre várias máquinas e
+avaliar experimentalmente seu desempenho (\emph{speedup}), o balanceamento
+de carga entre máquinas heterogêneas e a tolerância a falhas de workers.
+
+Este pré-projeto tem caráter \textbf{exploratório} em duas frentes: o
+\textbf{conjunto de dados} (Seção~\ref{sec:datasets}), ainda em análise,
+e o \textbf{ambiente de execução} (Seção~\ref{sec:ambiente}), cujas opções
+foram avaliadas e que já está definido. A pergunta que o sistema vai
+responder e o tipo de processamento (agregação, contagem, filtragem\ldots)
+são decisões posteriores, tomadas após a definição do dataset.

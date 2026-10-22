@@ -1,0 +1,63 @@
+\section{Arquitetura proposta}
+
+O sistema segue a arquitetura \textbf{mestre/trabalhador}
+(\emph{master-worker})~\cite{masterworker}, no modelo de paralelismo de
+dados popularizado pelo MapReduce~\cite{mapreduce}
+(Figura~\ref{fig:arquitetura}):
+
+\begin{enumerate}
+  \item o \textbf{mestre} divide os dados em pedaços (\emph{chunks}) e
+    distribui as tarefas;
+  \item os \textbf{workers} processam seus pedaços em paralelo e devolvem
+    resultados parciais pequenos (uma soma, uma contagem), nunca os dados
+    brutos;
+  \item o mestre \textbf{agrega} os resultados parciais e produz a resposta
+    final.
+\end{enumerate}
+
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}[
+      no/.style={draw, rounded corners, minimum width=2.6cm,
+                 minimum height=0.9cm, align=center},
+      seta/.style={-{Stealth[length=2.5mm]}, thick},
+      node distance=1.1cm and 0.6cm]
+    \node[no, fill=blue!10] (dados) {Dados de entrada};
+    \node[no, fill=orange!20, below=of dados] (mestre)
+      {\textbf{Mestre}\\\small divide os dados};
+    \node[no, fill=green!15, below=of mestre] (w2) {Worker 2};
+    \node[no, fill=green!15, left=of w2] (w1) {Worker 1};
+    \node[no, fill=green!15, right=of w2] (w3) {Worker N};
+    \node[no, fill=orange!20, below=of w2] (agrega)
+      {\textbf{Mestre}\\\small agrega os parciais};
+    \node[no, fill=blue!10, below=of agrega] (resp) {Resposta final};
+
+    \draw[seta] (dados) -- (mestre);
+    \foreach \w in {w1, w2, w3} {
+      \draw[seta] (mestre) -- node[pos=0.5, font=\scriptsize, fill=white]
+        {pedaço} (\w);
+      \draw[seta] (\w) -- (agrega);
+    }
+    \draw[seta] (agrega) -- (resp);
+  \end{tikzpicture}
+  \caption{Fluxo da arquitetura mestre/workers.}
+  \label{fig:arquitetura}
+\end{figure}
+
+Há duas formas de entregar os pedaços aos workers, e o grupo vai comparar
+as duas:
+
+\begin{description}
+  \item[Estática:] os dados são divididos em $N$ partes iguais, uma por
+    worker. É simples, mas se um worker for mais lento, todos esperam por
+    ele.
+  \item[Dinâmica (\emph{self-scheduling}):] os dados são divididos em
+    muitos pedaços pequenos, e o mestre envia o próximo pedaço a cada
+    worker que termina. Workers mais rápidos processam mais pedaços, e
+    ninguém fica ocioso~\cite{calvinmpi}.
+\end{description}
+
+Diferentemente do cenário de balanceamento de carga, que distribui
+\emph{requisições} contínuas com foco em tempo de resposta, este cenário
+distribui \emph{pedaços de dados} de um trabalho com começo e fim
+(processamento em lote), com foco em terminar mais rápido.

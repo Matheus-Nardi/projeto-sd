@@ -10,7 +10,7 @@ Sistema mestre/workers (padrão MapReduce) para processamento de alto volume de 
 
 | Pasta | Conteúdo |
 |---|---|
-| `relatorios/` | `template/` com preâmbulo, capa e `dados.tex` compartilhados; uma pasta por semana (`semana-XX/`) |
+| `relatorios/` | `template/` com preâmbulo, capa, `dados.tex` e `referencias.bib` compartilhados; `pre-projeto/`; uma pasta por semana (`semana-XX/`) |
 
 ## Relatórios em LaTeX
 
@@ -30,6 +30,7 @@ Sistema mestre/workers (padrão MapReduce) para processamento de alto volume de 
 make                        # mostra a ajuda e os relatórios existentes
 make novo-relatorio S=01    # cria relatorios/semana-01/ a partir do template
 make relatorio S=01         # gera relatorios/semana-01/relatorio-semana-01.pdf
+make pre-projeto            # gera relatorios/pre-projeto/pre-projeto.pdf
 make assistir S=01          # recompila sozinho sempre que um .tex for salvo (Ctrl+C para sair)
 make todos                  # gera todos os relatórios
 make template               # gera o PDF do template, para conferir a capa
