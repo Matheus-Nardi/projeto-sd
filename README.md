@@ -77,6 +77,7 @@ python scripts/obter_dados.py --checksum dados/enem_sintetico_amostra.csv
 ```
 
 **Checksums de referência:**
+- `dados/enem_2023_real.csv` (113.91 MB, 3.933.955 participantes reais do ENEM 2023): `e3d4e5c7e2d07db0ea501690dd2f6b49de3566e7eb45835deac47490d4f65169`
 - `dados/enem_sintetico_amostra.csv` (10 MB, seed 42): `72ad34931db8e1adf99a53b0f99549d26a3c6075d98eafc7425ae76e0b5796b7`
 
 ## Fluxo de trabalho

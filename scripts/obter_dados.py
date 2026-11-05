@@ -18,7 +18,9 @@ import hashlib
 import io
 import os
 import random
+import shutil
 import ssl
+import subprocess
 import sys
 import time
 import urllib.request
@@ -74,15 +76,37 @@ def calcular_sha256(caminho_arquivo: str, bloco: int = 65536) -> str:
 
 
 def baixar_arquivo_com_progresso(url: str, caminho_destino: str) -> None:
-    """Baixa um arquivo via HTTP exibindo taxa e barra de progresso no terminal."""
+    """Baixa um arquivo via HTTP com curl (resiliente com resume e retry) ou urllib."""
     os.makedirs(os.path.dirname(os.path.abspath(caminho_destino)), exist_ok=True)
+    
+    # 1. Tentar curl (nativo no Linux, macOS e Windows 10/11)
+    curl_bin = shutil.which("curl") or shutil.which("curl.exe")
+    if curl_bin:
+        print(f">> Baixando via curl ({curl_bin}) com suporte a retry e resume...")
+        cmd = [
+            curl_bin,
+            "-fSL",
+            "-C", "-",
+            "--retry", "5",
+            "--retry-delay", "3",
+            "-A", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+            url,
+            "-o", caminho_destino
+        ]
+        res = subprocess.run(cmd)
+        if res.returncode == 0 and os.path.exists(caminho_destino) and os.path.getsize(caminho_destino) > 0:
+            print("\n>> Download com curl concluído com sucesso!")
+            return
+        print("\n>> curl encontrou problemas, tentando fallback via Python urllib...")
+
+    # 2. Fallback via urllib com contexto SSL tolerante
     req = urllib.request.Request(
         url,
-        headers={"User-Agent": "curl/8.4.0 (UNITINS Sistemas Distribuidos)"}
+        headers={"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"}
     )
     ctx = _criar_ssl_context()
 
-    print(f">> Conectando a {url}...")
+    print(f">> Conectando via urllib a {url}...")
     with urllib.request.urlopen(req, context=ctx, timeout=30) as response:
         total_size = response.headers.get("Content-Length")
         total_bytes = int(total_size) if total_size else 0

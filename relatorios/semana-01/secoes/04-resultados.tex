@@ -25,17 +25,32 @@ ENEM (Tabela~\ref{tab:esquema}).
   \label{tab:esquema}
 \end{table}
 
-\subsection{Validação experimental do gerador e amostragem}
-Executamos o utilitário \texttt{scripts/obter\_dados.py} para geração de uma
-amostra de teste controlada de $10$\,MB com a semente determinística
-$\text{seed}=42$. Os dados de execução e validação obtidos foram:
+\subsection{Obtenção e métricas do dataset real oficial (ENEM 2023)}
+Através da automação implementada no \texttt{scripts/obter\_dados.py}, o pacote
+compactado oficial (\texttt{microdados\_enem\_2023.zip}, $\sim 524$\,MB) foi
+baixado diretamente dos servidores do INEP via protocolo HTTP com suporte a
+reconexão automática. Durante a extração em \emph{streaming}, o módulo descartou
+as $69$ colunas acessórias e gravou o arquivo tratado
+\texttt{dados/enem\_2023\_real.csv}. A inspeção estatística revelou:
+
+\begin{itemize}
+  \item \textbf{Arquivo gerado:} \texttt{dados/enem\_2023\_real.csv}
+  \item \textbf{Tamanho real em disco:} $113{,}91$\,MB (redução expressiva frente aos $> 2$\,GB do CSV bruto original com 76 colunas)
+  \item \textbf{Total de inscritos reais:} $3.933.955$ participantes
+  \item \textbf{Presentes na prova de Matemática:} $2.692.427$ ($68{,}44\%$)
+  \item \textbf{Faltosos / eliminados:} $1.241.528$ ($31{,}56\%$)
+  \item \textbf{Hash de integridade oficial (SHA-256):}\\
+    \texttt{\footnotesize e3d4e5c7e2d07db0ea501690dd2f6b49de3566e7eb45835deac47490d4f65169}
+\end{itemize}
+
+\subsection{Métricas do gerador sintético determinístico}
+Como ferramenta complementar para os experimentos de escalabilidade onde é
+necessário variar precisamente o volume de dados ($100$\,MB, $500$\,MB, $1$\,GB,
+$2$\,GB e $4$\,GB), validamos o gerador sintético com $\text{seed}=42$:
 
 \begin{itemize}
   \item \textbf{Arquivo gerado:} \texttt{dados/enem\_sintetico\_amostra.csv}
-  \item \textbf{Tamanho real em disco:} $10{,}07$\,MB ($10.562.878$ bytes)
-  \item \textbf{Total de registros:} $325.000$ linhas
-  \item \textbf{Candidatos presentes (Matemática):} $243.652$ ($\sim 74{,}97\%$)
-  \item \textbf{Candidatos ausentes/eliminados:} $81.348$ ($\sim 25{,}03\%$)
+  \item \textbf{Tamanho em disco:} $10{,}07$\,MB ($325.000$ registros gerados em $< 3$\,s)
   \item \textbf{Hash de integridade (SHA-256):}\\
     \texttt{\footnotesize 72ad34931db8e1adf99a53b0f99549d26a3c6075d98eafc7425ae76e0b5796b7}
 \end{itemize}
@@ -46,7 +61,7 @@ transferido aos workers e o volume devolvido ao nó mestre. Com o esquema
 definido:
 \begin{itemize}
   \item Um bloco de dados (\emph{chunk}) típico de $100.000$ participantes
-    possui cerca de $3{,}1$\,MB brutos.
+    possui cerca de $2{,}9$\,MB brutos no arquivo filtrado.
   \item Após a filtragem e agregação local no worker, o resultado parcial
     consolidado consiste em uma tabela agregada de no máximo $27 \times 2 = 54$
     linhas (menos de $2$\,KB).
