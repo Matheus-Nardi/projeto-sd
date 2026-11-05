@@ -59,7 +59,21 @@ Se a compilação falhar, o `make` mostra o arquivo e a linha do erro, e o log c
 
 ## Dados
 
-Os dados **não** são versionados. Para obtê-los, use os scripts de download/geração (seed e checksum documentados aqui quando definidos).
+Os dados **não** são versionados no Git. Para gerar dados sintéticos determinísticos baseados no esquema do ENEM ou inspecionar arquivos existentes, utilize o script `scripts/obter_dados.py`:
+
+```bash
+# Gerar amostra de validação de 10 MB (seed=42)
+python scripts/obter_dados.py --gerar-sintetico --mb 10 --saida dados/enem_sintetico_amostra.csv --seed 42
+
+# Inspecionar dados e verificar número de presentes/faltosos
+python scripts/obter_dados.py --inspecionar dados/enem_sintetico_amostra.csv
+
+# Conferir o hash SHA-256 de um arquivo
+python scripts/obter_dados.py --checksum dados/enem_sintetico_amostra.csv
+```
+
+**Checksums de referência:**
+- `dados/enem_sintetico_amostra.csv` (10 MB, seed 42): `72ad34931db8e1adf99a53b0f99549d26a3c6075d98eafc7425ae76e0b5796b7`
 
 ## Fluxo de trabalho
 

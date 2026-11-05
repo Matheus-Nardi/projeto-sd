@@ -1,0 +1,20 @@
+\section{Próximos passos}
+
+Para a Semana 2 (com entrega prevista para 05/11/2026), as metas de trabalho
+são:
+\begin{enumerate}
+  \item \textbf{Criação do \texttt{Vagrantfile}:} Provisionar o cluster de
+    validação composto por $1$ máquina virtual mestre (\emph{master}) e $2$ a
+    $3$ nós trabalhadores (\emph{workers}) utilizando o Ubuntu Server 24.04 LTS
+    sem interface gráfica, configurados com rede privada interna e endereçamento
+    IP fixo;
+  \item \textbf{Playbook de automação com Ansible:} Criar os roteiros do Ansible
+    para instalação do Open MPI, Python 3 e biblioteca \texttt{mpi4py}, além de
+    gerar e distribuir chaves SSH sem senha e montar o arquivo de \emph{hosts}
+    (\texttt{hostfile}) do cluster;
+  \item \textbf{Teste de conectividade MPI:} Executar um programa preliminar de
+    teste (comunicação ponto a ponto simples e \emph{broadcast}) confirmando
+    que os processos se comunicam entre os diferentes nós da rede virtual;
+  \item \textbf{Relatório da Semana 2:} Documentar a infraestrutura e a topologia
+    do cluster no respectivo relatório.
+\end{enumerate}

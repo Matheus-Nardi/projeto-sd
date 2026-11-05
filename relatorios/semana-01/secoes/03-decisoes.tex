@@ -1,0 +1,52 @@
+\section{Decisões tomadas e por quê}
+
+Nesta etapa, consolidamos as seguintes decisões técnicas e organizacionais:
+
+\paragraph{1. Seleção do dataset oficial: Microdados do ENEM + gerador sintético.}
+Optou-se pelos Microdados do ENEM (INEP) como conjunto de dados real oficial. A
+escolha traz significado prático às métricas, permite trabalhar com um volume
+expressivo de dados reais nacionais ($\sim 2$\,GB descompactados por ano) e
+possibilita uma estratégia híbrida: o processamento real demonstrará a
+utilidade prática do sistema, enquanto o gerador sintético (com mesma estrutura
+de colunas e \emph{seed} fixa) será utilizado nos testes formais de \emph{speedup}
+e escalabilidade da Lei de Amdahl.
+
+\paragraph{2. Pergunta que o sistema responde.}
+Definiu-se formalmente a pergunta analítica:
+\begin{quote}
+  \emph{``Qual o desempenho médio nas provas objetivas (Matemática) e de Redação
+  dos participantes do exame, discriminado por Unidade Federativa (UF) e por
+  dependência administrativa da escola (pública versus privada)?''}
+\end{quote}
+\textbf{Justificativa técnica para Sistemas Distribuídos:}
+A pergunta selecionada exige filtragem (eliminar faltosos e eliminados) e
+agregação por chave composta $(\text{UF}, \text{tipo de escola})$. No modelo
+MapReduce, essa operação é altamente comutativa e associativa: cada worker
+calcula as tuplas locais $(\text{soma\_notas}, \text{quantidade})$ e devolve ao
+mestre uma estrutura de apenas $27 \times 2 = 54$ entradas. Isso garante que a
+mensagem de retorno tenha tamanho constante de poucos kilobytes, preservando o
+canal de rede e evitando que a fase de agregação final se torne um gargalo
+prematuro.
+
+\paragraph{3. Linguagem e biblioteca de comunicação.}
+Decidiu-se pela utilização de **Python 3 com a biblioteca \texttt{mpi4py}** sobre
+o Open MPI. Embora C ofereça menor consumo de memória por nó, o uso de Python
+acelera drasticamente o desenvolvimento do código de ingestão, manipulação de
+dicionários e validação dos dados, mantendo excelente desempenho através de
+chamadas nativas do MPI subjacente.
+
+\paragraph{4. Atribuição dos papéis fixos da equipe.}
+Para assegurar continuidade e responsabilidade direta em cada frente ao longo
+das semanas, foram distribuídos os papéis fixos:
+\begin{itemize}
+  \item \textbf{Dados e Documentação:} Matheus Nardi — responsável pelas
+    rotinas de ingestão, sanitização, verificação de dados, consolidação dos
+    relatórios e slides semanais;
+  \item \textbf{Desenvolvimento:} Alêkson Castro — responsável pela
+    implementação do algoritmo sequencial de referência, núcleo MPI (mestre e
+    workers), fila dinâmica de tarefas e tolerância a falhas;
+  \item \textbf{Infraestrutura e Experimentos:} Italo Beckman — responsável pelo
+    provisionamento via Vagrant e Ansible, orquestração do cluster de VMs,
+    configuração de rede dos nós físicos e coleta sistemática de métricas de
+    desempenho.
+\end{itemize}

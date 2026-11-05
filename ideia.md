@@ -25,8 +25,8 @@ Sistema com arquitetura **mestre/workers** para processamento de **alto volume d
 Padrão base: **MapReduce** (dividir → processar em paralelo → combinar).
 
 - **Prioridade: técnica primeiro, negócio depois.** O núcleo (mestre/workers, distribuição, agregação, medições) não depende do tema dos dados; o desenvolvimento pode começar com dados sintéticos enquanto os datasets reais são analisados.
-- **Pergunta que o sistema responde:** _[A DEFINIR — será escolhida depois da análise dos datasets candidatos; ex.: "média de nota de matemática por estado no ENEM"]_
-- **Tipo de processamento:** _[A DEFINIR — depende da pergunta: agregação, filtragem, contagem, ordenação, análise de logs...]_
+- **Pergunta que o sistema responde (Decidido em 29/10/2026):** Média das notas de Matemática e Redação por Unidade Federativa (UF) e tipo de dependência administrativa da escola (pública vs. privada).
+- **Tipo de processamento (Decidido em 29/10/2026):** Filtragem de faltosos/eliminados e agregação aditiva por chave composta `(UF, TP_ESCOLA)` em modelo MapReduce (tuplas `[soma, contagem]`).
 
 ### Visão atual (para o pré-projeto)
 
@@ -59,7 +59,7 @@ Termos que descrevem o cenário, cada um sob um aspecto:
 - **Alternativa avaliada:** PelicanHPC (Debian, live, Open MPI e Ganglia prontos; workers dão boot pela rede; v6.1 de set/2025). Rocks Cluster descontinuada (2017).
 
 ### Comunicação / implementação
-- **Decidido (21/10/2026): MPI.** `scatter` dos pedaços e `gather` dos resultados, e mensagens ponto a ponto para a fila dinâmica. Motivo: padrão da computação em cluster, já vem na PelicanHPC e cobre o que o modelo mestre/workers precisa. Linguagem/biblioteca (`mpi4py` em Python ou C com Open MPI): _[A DEFINIR]_.
+- **Decidido (21/10/2026, atualizado em 29/10/2026): MPI via Python (mpi4py).** `scatter` dos pedaços e `gather` dos resultados, e mensagens ponto a ponto para a fila dinâmica. Motivo: padrão da computação em cluster e alta produtividade para manipulação e validação das tabelas de dados.
 - Alternativas consideradas: sockets, gRPC, fila de mensagens (RabbitMQ). Para comparação: Dask, Ray ou Spark.
 
 ### Dados de teste
@@ -102,9 +102,9 @@ Aulas e entregas às quintas-feiras. Cronograma pouco folgado: as semanas 1 e 2 
 
 ### Papéis fixos (decidido em 21/10/2026)
 Com 3 integrantes e 6 semanas, papéis fixos por frente rendem mais que rodízio (sem tempo de adaptação a cada semana). Não há revisor dedicado. Mesmo com papéis fixos, a tendência é todos participarem um pouco de tudo: o papel indica quem responde pela frente, não um limite.
-- **Dados e documentação:** análise e preparo dos datasets (scripts, seed, checksum); consolida os relatórios semanais; slides; mantém este arquivo atualizado. Responsável: _[A DEFINIR]_
-- **Desenvolvimento:** código MPI (mestre, workers, fila dinâmica, tolerância a falhas) e versão sequencial de referência. Responsável: _[A DEFINIR]_
-- **Infraestrutura e experimentos:** Vagrant + Ansible, cluster de VMs, configuração dos notebooks; roda os experimentos, coleta métricas e gera gráficos. Responsável: _[A DEFINIR]_
+- **Dados e documentação:** análise e preparo dos datasets (scripts, seed, checksum); consolida os relatórios semanais; slides; mantém este arquivo atualizado. Responsável: Matheus Nardi
+- **Desenvolvimento:** código MPI (mestre, workers, fila dinâmica, tolerância a falhas) e versão sequencial de referência. Responsável: Alêkson Castro
+- **Infraestrutura e experimentos:** Vagrant + Ansible, cluster de VMs, configuração dos notebooks; roda os experimentos, coleta métricas e gera gráficos. Responsável: Italo Beckman
 - **Contratos entre as frentes:** desenvolvimento entrega um programa que roda com `mpirun`; infraestrutura entrega um cluster onde esse comando funciona; dados entrega o arquivo no formato combinado.
 - **Relatórios:** cada um escreve a parte da sua frente; quem cuida da documentação consolida; todos leem o PDF antes da entrega (substitui o revisor).
 - **Apresentações:** cada um apresenta a parte que conduziu.
@@ -159,13 +159,13 @@ projeto-sd/
 ## Próximos passos
 
 - [x] Definir o cenário (mestre/workers)
-- [ ] Analisar datasets candidatos e definir a pergunta que o sistema responde
+- [x] Analisar datasets candidatos e definir a pergunta que o sistema responde
 - [x] Definir o ambiente (local/Docker → VMs Ubuntu com Vagrant → notebooks físicos) e a comunicação (MPI), com automação via Vagrant + Ansible
 - [x] Definir o modelo de papéis (fixos, um por frente)
-- [ ] Definir quem assume cada papel
+- [x] Definir quem assume cada papel
 - [x] Criar o repositório no GitHub e convidar os integrantes
 - [x] Template LaTeX dos relatórios e Makefile de build
-- [ ] **Apresentação do pré-projeto (22/10/2026)**: relatório em `relatorios/pre-projeto/`, com caráter exploratório (opções de datasets e de ambiente, critérios de escolha e quando cada decisão será tomada). Roteiro:
+- [x] **Apresentação do pré-projeto (22/10/2026)**: relatório em `relatorios/pre-projeto/`, com caráter exploratório (opções de datasets e de ambiente, critérios de escolha e quando cada decisão será tomada). Roteiro:
   1. Problema e cenário escolhido
   2. Por que é um problema distribuído (volume de dados, limite de uma máquina só)
   3. Arquitetura proposta (diagrama mestre → workers)

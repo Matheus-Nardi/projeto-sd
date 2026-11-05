@@ -1,0 +1,31 @@
+\section{Problemas encontrados}
+
+Durante os testes de inspeção e engenharia dos dados, foram identificados e
+mitigados os seguintes problemas:
+
+\begin{enumerate}
+  \item \textbf{Inconsistência de codificação (\emph{encoding}) e separadores:}
+    Os microdados históricos disponibilizados pelo INEP frequentemente alternam
+    entre codificação ISO-8859-1 (Latin-1) e UTF-8, além de utilizarem ponto e
+    vírgula (\texttt{;}) como delimitador padrão e vírgula como separador decimal.
+    \emph{Solução:} O módulo de leitura foi parametrizado com tolerância a
+    erros (\texttt{errors="replace"}) e conversão explícita de tipos numéricos
+    com substituição de vírgula por ponto antes da conversão para ponto flutuante.
+  \item \textbf{Registros com valores ausentes (\emph{missing values}):}
+    Candidatos ausentes nas provas de domingo não possuem notas preenchidas nos
+    arquivos brutos, gerando campos vazios que poderiam ocasionar exceções de
+    \emph{parsing} ou distorcer o cálculo de médias aritméticas caso fossem
+    computados como zero.
+    \emph{Solução:} Implementação de filtro obrigatório baseado nos sinalizadores
+    \texttt{TP\_PRESENCA\_MT == 1} e \texttt{TP\_PRESENCA\_LC == 1}. Apenas
+    candidatos efetivamente presentes entram no acumulador de notas e no
+    contador de participantes.
+  \item \textbf{Dependência de banda e instabilidade de servidores públicos:}
+    O download de arquivos completos de $2$\,GB a partir dos servidores do INEP
+    pode sofrer lentidão ou oscilação de rede, prejudicando os testes rápidos
+    durante o desenvolvimento do cluster.
+    \emph{Solução:} A construção do gerador sintético determinístico com
+    \emph{seed} fixa eliminou totalmente o bloqueio das etapas de
+    desenvolvimento, permitindo testar a lógica distribuída imediatamente em
+    qualquer máquina sem necessidade de download prévio.
+\end{enumerate}

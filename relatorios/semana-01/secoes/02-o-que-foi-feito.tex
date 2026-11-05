@@ -1,0 +1,44 @@
+\section{O que foi feito}
+
+Durante a semana, foram realizadas as seguintes atividades técnicas e analíticas:
+
+\subsection{Avaliação comparativa dos datasets candidatos}
+Avaliamos os quatro candidatos levantados na fase de pré-projeto com base nos
+critérios de independência de registros, combinabilidade matemática de
+resultados parciais, relevância contextual e volumetria:
+\begin{itemize}
+  \item \textbf{Microdados do ENEM (INEP):} Estrutura tabular bem definida
+    (formato CSV com delimitador \texttt{;}), contendo entre 3 e 4 milhões de
+    participantes por edição anual e volume bruto descompactado de cerca de
+    $1{,}5$ a $2{,}0$\,GB. Cada linha representa um inscrito de forma
+    totalmente independente, permitindo fatiamento simples por blocos de linhas
+    ou bytes.
+  \item \textbf{NYC Taxi Trip Records:} Dados com milhões de corridas e
+    esquema simples de tarifas. Apesar de excelente para benchmarks, possui
+    menor apelo de negócio no contexto acadêmico regional brasileiro.
+  \item \textbf{Dumps da Wikipédia:} Modelo clássico de \emph{Word Count}.
+    Embora seja didático, o processamento de texto demanda estruturas de dados
+    maiores no intercâmbio de mensagens (dicionários extensos de termos), o
+    que sobrecarregaria precocemente o canal de comunicação antes dos
+    experimentos de heterogeneidade e tolerância a falhas.
+  \item \textbf{Dados sintéticos:} Ferramenta essencial de controle de
+    volume, viabilizando experimentos estritamente controlados de escalabilidade
+    com tamanhos arbitrários ($100$\,MB, $500$\,MB, $1$\,GB, $2$\,GB e
+    $4$\,GB) sem variações de latência externa de download.
+\end{itemize}
+
+\subsection{Implementação das rotinas de dados}
+Criamos o módulo utilitário \texttt{scripts/obter\_dados.py}, responsável por:
+\begin{enumerate}
+  \item Gerar datasets sintéticos determinísticos com base no esquema de
+    colunas do ENEM através do parâmetro \texttt{--seed} (garantindo
+    reprodutibilidade estrita entre os integrantes);
+  \item Calcular e verificar o hash criptográfico SHA-256 de qualquer arquivo
+    de dados (\texttt{--checksum});
+  \item Realizar inspeção estatística e contagem rápida de registros
+    (\texttt{--inspecionar}), discriminando candidatos presentes e ausentes.
+\end{enumerate}
+
+Além do módulo principal, foi criada uma suíte de testes unitários
+(\texttt{tests/test\_dados.py}) validando o determinismo de geração de bytes,
+a integridade do cabeçalho e as contagens estatísticas de participantes.

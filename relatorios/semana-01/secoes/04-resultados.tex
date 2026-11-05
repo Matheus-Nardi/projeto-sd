@@ -1,0 +1,56 @@
+\section{Resultados e métricas}
+
+\subsection{Esquema de dados selecionado}
+Para responder à pergunta analítica proposta com o menor consumo desnecessário de
+memória, delimitamos o processamento estritamente a $7$ campos dos Microdados do
+ENEM (Tabela~\ref{tab:esquema}).
+
+\begin{table}[H]
+  \centering
+  \small
+  \begin{tabularx}{\textwidth}{lXl}
+    \toprule
+    \textbf{Campo} & \textbf{Descrição} & \textbf{Papel no Processamento} \\
+    \midrule
+    \texttt{NU\_INSCRICAO} & Identificador do inscrito & Chave primária / controle de particionamento \\
+    \texttt{SG\_UF\_PROVA} & Sigla da Unidade Federativa & Chave de agregação (27 estados) \\
+    \texttt{TP\_ESCOLA} & Tipo de escola (1: Não inf., 2: Pública, 3: Privada) & Chave de agregação \\
+    \texttt{TP\_PRESENCA\_MT} & Presença na prova de Matemática & Filtro booleano ($1 = \text{presente}$) \\
+    \texttt{TP\_PRESENCA\_LC} & Presença na prova de Linguagens/Redação & Filtro booleano ($1 = \text{presente}$) \\
+    \texttt{NU\_NOTA\_MT} & Nota da prova de Matemática ($0{,}0$ a $1000{,}0$) & Valor agregado ($\sum \text{nota}$, $\text{contagem}$) \\
+    \texttt{NU\_NOTA\_REDACAO} & Nota da prova de Redação ($0{,}0$ a $1000{,}0$) & Valor agregado ($\sum \text{nota}$, $\text{contagem}$) \\
+    \bottomrule
+  \end{tabularx}
+  \caption{Campos selecionados para o pipeline de dados.}
+  \label{tab:esquema}
+\end{table}
+
+\subsection{Validação experimental do gerador e amostragem}
+Executamos o utilitário \texttt{scripts/obter\_dados.py} para geração de uma
+amostra de teste controlada de $10$\,MB com a semente determinística
+$\text{seed}=42$. Os dados de execução e validação obtidos foram:
+
+\begin{itemize}
+  \item \textbf{Arquivo gerado:} \texttt{dados/enem\_sintetico\_amostra.csv}
+  \item \textbf{Tamanho real em disco:} $10{,}07$\,MB ($10.562.878$ bytes)
+  \item \textbf{Total de registros:} $325.000$ linhas
+  \item \textbf{Candidatos presentes (Matemática):} $243.652$ ($\sim 74{,}97\%$)
+  \item \textbf{Candidatos ausentes/eliminados:} $81.348$ ($\sim 25{,}03\%$)
+  \item \textbf{Hash de integridade (SHA-256):}\\
+    \texttt{\footnotesize 72ad34931db8e1adf99a53b0f99549d26a3c6075d98eafc7425ae76e0b5796b7}
+\end{itemize}
+
+\subsection{Taxa de redução no modelo MapReduce}
+Um ponto crítico em Sistemas Distribuídos é a relação entre o volume de dados
+transferido aos workers e o volume devolvido ao nó mestre. Com o esquema
+definido:
+\begin{itemize}
+  \item Um bloco de dados (\emph{chunk}) típico de $100.000$ participantes
+    possui cerca de $3{,}1$\,MB brutos.
+  \item Após a filtragem e agregação local no worker, o resultado parcial
+    consolidado consiste em uma tabela agregada de no máximo $27 \times 2 = 54$
+    linhas (menos de $2$\,KB).
+  \item Essa taxa de compressão lógica superior a $1.500:1$ garante que a rede
+    não seja inundada na fase de agregação (\emph{gather}), tornando o ganho de
+    paralelismo governado estritamente pela capacidade de computação dos nós.
+\end{itemize}
