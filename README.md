@@ -59,16 +59,20 @@ Se a compilação falhar, o `make` mostra o arquivo e a linha do erro, e o log c
 
 ## Dados
 
-Os dados **não** são versionados no Git. Para gerar dados sintéticos determinísticos baseados no esquema do ENEM ou inspecionar arquivos existentes, utilize o script `scripts/obter_dados.py`:
+Os dados **não** são versionados no Git. O script `scripts/obter_dados.py` gerencia tanto o download dos microdados oficiais do INEP quanto a geração sintética para testes:
 
 ```bash
-# Gerar amostra de validação de 10 MB (seed=42)
+# 1. DADOS REAIS: Baixar o pacote oficial do ENEM (INEP) e extrair CSV filtrado
+python scripts/obter_dados.py --baixar-enem --ano 2023
+
+# Extrair uma amostra de 200.000 linhas reais a partir do ZIP oficial:
+python scripts/obter_dados.py --extrair-real --ano 2023 --amostra-linhas 200000
+
+# 2. DADOS SINTÉTICOS: Gerar amostra determinística de 10 MB (seed=42)
 python scripts/obter_dados.py --gerar-sintetico --mb 10 --saida dados/enem_sintetico_amostra.csv --seed 42
 
-# Inspecionar dados e verificar número de presentes/faltosos
+# 3. INSPEÇÃO E CHECKSUM
 python scripts/obter_dados.py --inspecionar dados/enem_sintetico_amostra.csv
-
-# Conferir o hash SHA-256 de um arquivo
 python scripts/obter_dados.py --checksum dados/enem_sintetico_amostra.csv
 ```
 
