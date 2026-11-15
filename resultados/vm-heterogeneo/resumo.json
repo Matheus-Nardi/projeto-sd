@@ -1,0 +1,84 @@
+{
+  "data": "15/11/2026 20:09",
+  "rotulo": "worker 1 com atraso de 50 ms por tarefa, em VMs (exploratorio)",
+  "ambiente": "vm",
+  "commit": "nao-commitado",
+  "entrada": {
+    "sha256": "e3d4e5c7e2d07db0ea501690dd2f6b49de3566e7eb45835deac47490d4f65169",
+    "linhas": 3933955,
+    "bytes": 119442253,
+    "arquivo": "/opt/projeto-sd/dados/enem_2023_real.csv"
+  },
+  "bloco_linhas": 10000,
+  "atrasos": [
+    "1=0.05"
+  ],
+  "repeticoes": 5,
+  "aquecimento": 1,
+  "timeout_s": 600,
+  "hostfile": [
+    "master slots=1",
+    "worker1 slots=1",
+    "worker2 slots=1"
+  ],
+  "rede": "192.168.56.0/24",
+  "maquina": {
+    "hostname": "master",
+    "cpus": 1,
+    "plataforma": "Linux-6.8.0-86-generic-x86_64-with-glibc2.39",
+    "python": "3.12.3"
+  },
+  "versoes": {
+    "mpi": "Open MPI v4.1.6, package: Debian OpenMPI, ident: 4.1.6, repo rev: v4.1.6, Sep 30, 2023\u0000",
+    "mpi4py": "3.1.5",
+    "python": "3.12.3"
+  },
+  "observacao": "tempo_total_s é medido dentro do programa (exclui o lançamento do mpirun); tempo_externo_s inclui o lançamento. O mestre é dedicado: W workers usam W+1 processos.",
+  "cenarios": [
+    {
+      "cenario": "sequencial",
+      "modo": "sequencial",
+      "politica": null,
+      "workers": 0,
+      "repeticoes": 5,
+      "mediana_s": 28.62452938699971,
+      "min_s": 28.41712962299971,
+      "max_s": 28.812157361000573,
+      "desvio_padrao_s": 0.14662628759220417,
+      "speedup_vs_sequencial": 1.0,
+      "speedup_vs_mpi_1": null,
+      "eficiencia_vs_sequencial": null,
+      "eficiencia_vs_mpi_1": null
+    },
+    {
+      "cenario": "mpi-estatica-2w",
+      "modo": "mpi",
+      "politica": "estatica",
+      "workers": 2,
+      "repeticoes": 5,
+      "mediana_s": 27.476251034,
+      "min_s": 26.922227431,
+      "max_s": 28.019216119,
+      "desvio_padrao_s": 0.39740400957157584,
+      "speedup_vs_sequencial": 1.0417916677052774,
+      "speedup_vs_mpi_1": null,
+      "eficiencia_vs_sequencial": 0.5208958338526387,
+      "eficiencia_vs_mpi_1": null
+    },
+    {
+      "cenario": "mpi-dinamica-2w",
+      "modo": "mpi",
+      "politica": "dinamica",
+      "workers": 2,
+      "repeticoes": 5,
+      "mediana_s": 21.042869393,
+      "min_s": 20.979256684,
+      "max_s": 21.431868175,
+      "desvio_padrao_s": 0.22361545569787605,
+      "speedup_vs_sequencial": 1.36029592031407,
+      "speedup_vs_mpi_1": null,
+      "eficiencia_vs_sequencial": 0.680147960157035,
+      "eficiencia_vs_mpi_1": null
+    }
+  ]
+}

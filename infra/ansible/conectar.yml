@@ -1,0 +1,67 @@
+---
+- name: Configurar confiança SSH após todos os nós estarem disponíveis
+  hosts: cluster
+  become: true
+  vars:
+    cluster_user: mpi
+  tasks:
+    - name: Validar que foram coletadas as chaves de todos os nós
+      ansible.builtin.assert:
+        that:
+          - cluster_host_keys | length == cluster_nodes | length
+          - cluster_user_keys | length == cluster_nodes | length
+          - item.name in cluster_host_keys
+          - item.name in cluster_user_keys
+      loop: "{{ cluster_nodes }}"
+
+    - name: Autorizar apenas as chaves das contas exclusivas do cluster
+      ansible.builtin.copy:
+        content: |
+          {% for node in cluster_nodes %}
+          {{ cluster_user_keys[node.name] }}
+          {% endfor %}
+        dest: "/home/{{ cluster_user }}/.ssh/authorized_keys"
+        owner: "{{ cluster_user }}"
+        group: "{{ cluster_user }}"
+        mode: '0600'
+
+    - name: Confiar nas chaves de host obtidas pelo canal de gerenciamento
+      ansible.builtin.copy:
+        content: |
+          {% for node in cluster_nodes %}
+          {{ node.name }},{{ node.ip }} {{ cluster_host_keys[node.name] }}
+          {% endfor %}
+        dest: "/home/{{ cluster_user }}/.ssh/known_hosts"
+        owner: "{{ cluster_user }}"
+        group: "{{ cluster_user }}"
+        mode: '0600'
+
+    - name: Configurar SSH restrito aos nós conhecidos
+      ansible.builtin.copy:
+        content: |
+          Host {% for node in cluster_nodes %}{{ node.name }} {{ node.ip }} {% endfor %}
+
+              User {{ cluster_user }}
+              IdentityFile /home/{{ cluster_user }}/.ssh/id_ed25519
+              IdentitiesOnly yes
+              BatchMode yes
+              StrictHostKeyChecking yes
+              UserKnownHostsFile /home/{{ cluster_user }}/.ssh/known_hosts
+              ConnectTimeout 5
+              ServerAliveInterval 5
+              ServerAliveCountMax 2
+          {% for node in cluster_nodes %}
+          Host {{ node.name }}
+              HostName {{ node.ip }}
+          {% endfor %}
+          Host *
+              BatchMode yes
+              StrictHostKeyChecking yes
+              PasswordAuthentication no
+              KbdInteractiveAuthentication no
+              IdentitiesOnly yes
+              UserKnownHostsFile /home/{{ cluster_user }}/.ssh/known_hosts
+        dest: "/home/{{ cluster_user }}/.ssh/config"
+        owner: "{{ cluster_user }}"
+        group: "{{ cluster_user }}"
+        mode: '0600'

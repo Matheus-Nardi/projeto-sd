@@ -1,0 +1,112 @@
+{
+  "data": "15/11/2026 20:01",
+  "rotulo": "escalabilidade em VMs (exploratorio)",
+  "ambiente": "vm",
+  "commit": "nao-commitado",
+  "entrada": {
+    "sha256": "e3d4e5c7e2d07db0ea501690dd2f6b49de3566e7eb45835deac47490d4f65169",
+    "linhas": 3933955,
+    "bytes": 119442253,
+    "arquivo": "/opt/projeto-sd/dados/enem_2023_real.csv"
+  },
+  "bloco_linhas": 10000,
+  "atrasos": [],
+  "repeticoes": 5,
+  "aquecimento": 1,
+  "timeout_s": 600,
+  "hostfile": [
+    "master slots=1",
+    "worker1 slots=1",
+    "worker2 slots=1"
+  ],
+  "rede": "192.168.56.0/24",
+  "maquina": {
+    "hostname": "master",
+    "cpus": 1,
+    "plataforma": "Linux-6.8.0-86-generic-x86_64-with-glibc2.39",
+    "python": "3.12.3"
+  },
+  "versoes": {
+    "mpi": "Open MPI v4.1.6, package: Debian OpenMPI, ident: 4.1.6, repo rev: v4.1.6, Sep 30, 2023\u0000",
+    "mpi4py": "3.1.5",
+    "python": "3.12.3"
+  },
+  "observacao": "tempo_total_s é medido dentro do programa (exclui o lançamento do mpirun); tempo_externo_s inclui o lançamento. O mestre é dedicado: W workers usam W+1 processos.",
+  "cenarios": [
+    {
+      "cenario": "sequencial",
+      "modo": "sequencial",
+      "politica": null,
+      "workers": 0,
+      "repeticoes": 5,
+      "mediana_s": 28.51430331099982,
+      "min_s": 28.215540797999893,
+      "max_s": 28.633028267000554,
+      "desvio_padrao_s": 0.1620615239480359,
+      "speedup_vs_sequencial": 1.0,
+      "speedup_vs_mpi_1": null,
+      "eficiencia_vs_sequencial": null,
+      "eficiencia_vs_mpi_1": null
+    },
+    {
+      "cenario": "mpi-estatica-1w",
+      "modo": "mpi",
+      "politica": "estatica",
+      "workers": 1,
+      "repeticoes": 5,
+      "mediana_s": 33.295769443,
+      "min_s": 32.956830069,
+      "max_s": 33.813773757,
+      "desvio_padrao_s": 0.3066103190208048,
+      "speedup_vs_sequencial": 0.856394184246569,
+      "speedup_vs_mpi_1": 1.0,
+      "eficiencia_vs_sequencial": 0.856394184246569,
+      "eficiencia_vs_mpi_1": 1.0
+    },
+    {
+      "cenario": "mpi-estatica-2w",
+      "modo": "mpi",
+      "politica": "estatica",
+      "workers": 2,
+      "repeticoes": 5,
+      "mediana_s": 17.356789882,
+      "min_s": 16.959234146,
+      "max_s": 17.666358979,
+      "desvio_padrao_s": 0.2857718140495342,
+      "speedup_vs_sequencial": 1.6428327763863069,
+      "speedup_vs_mpi_1": 1.918313793585163,
+      "eficiencia_vs_sequencial": 0.8214163881931534,
+      "eficiencia_vs_mpi_1": 0.9591568967925815
+    },
+    {
+      "cenario": "mpi-dinamica-1w",
+      "modo": "mpi",
+      "politica": "dinamica",
+      "workers": 1,
+      "repeticoes": 5,
+      "mediana_s": 33.294436522,
+      "min_s": 33.118236808,
+      "max_s": 34.752973588,
+      "desvio_padrao_s": 0.679877469855669,
+      "speedup_vs_sequencial": 0.8564284694278697,
+      "speedup_vs_mpi_1": 1.0,
+      "eficiencia_vs_sequencial": 0.8564284694278697,
+      "eficiencia_vs_mpi_1": 1.0
+    },
+    {
+      "cenario": "mpi-dinamica-2w",
+      "modo": "mpi",
+      "politica": "dinamica",
+      "workers": 2,
+      "repeticoes": 5,
+      "mediana_s": 17.209535263,
+      "min_s": 16.784027403,
+      "max_s": 17.46904587,
+      "desvio_padrao_s": 0.256590041188699,
+      "speedup_vs_sequencial": 1.6568897925038537,
+      "speedup_vs_mpi_1": 1.9346505302547052,
+      "eficiencia_vs_sequencial": 0.8284448962519269,
+      "eficiencia_vs_mpi_1": 0.9673252651273526
+    }
+  ]
+}

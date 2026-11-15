@@ -1,0 +1,8 @@
+{
+  "workers": 2,
+  "cpus": 1,
+  "memory_mb": 2048,
+  "subnet": "192.168.56.0/24",
+  "box": "bento/ubuntu-24.04",
+  "box_version": "202510.26.0"
+}

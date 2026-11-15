@@ -12,6 +12,12 @@ Sistema mestre/workers (padrão MapReduce) para processamento de alto volume de 
 |---|---|
 | `relatorios/` | `template/` com preâmbulo, capa, `dados.tex` e `referencias.bib` compartilhados; `pre-projeto/`; uma pasta por semana (`semana-XX/`) |
 | `apresentacoes/` | Slides em HTML/CSS: `template/` (estilo, navegação e `dados.js` da capa) e uma pasta por apresentação; abra o `index.html` no navegador |
+| `src/` | Núcleo de agregação, versão sequencial e versão MPI |
+| `tests/` | Testes (`python -m unittest discover -s tests`) e `fixtures/` |
+| `scripts/` | `obter_dados.py` (download/extração do ENEM e gerador sintético); `cluster/` (preparar, conectar e validar as VMs; testes de infraestrutura); `experimentos/` (execução e registro das medições) |
+| `infra/` | `cluster.json` (topologia), `bootstrap.sh` e `ansible/` (playbooks e role) |
+| `docs/` | Contrato de dados, protocolo MPI e guia do cluster |
+| `resultados/` | Medições pequenas e versionáveis dos experimentos |
 
 ## Relatórios em LaTeX
 
@@ -58,6 +64,50 @@ make slides A=pre-projeto   # exporta apresentacoes/pre-projeto/ para PDF (preci
 Se a compilação falhar, o `make` mostra o arquivo e a linha do erro, e o log completo fica em `relatorios/semana-XX/relatorio-semana-XX.log`.
 
 ## Dados
+
+A referência sequencial já pode ser executada com Python, sem dependências externas:
+
+```bash
+python -m unittest discover -s tests -v
+python -m src.sequencial tests/fixtures/enem_manual.csv --bloco-linhas 2
+python -m src.sequencial dados/enem_2023_real.csv --saida dados/resultado_sequencial.json
+```
+
+O resultado JSON contém somas, contagens e médias por UF da prova e tipo de escola.
+O tempo é escrito separadamente no stderr. Consulte o [contrato de dados](docs/contrato-dados.md)
+para filtros, tratamento de zeros, precisão e formato.
+
+A versão distribuída (`src/distribuido.py`) roda com MPI, com divisão estática ou
+fila dinâmica, e produz o mesmo JSON da referência:
+
+```bash
+mpirun -n 3 python3 -m src.distribuido dados/enem_2023_real.csv --politica dinamica
+```
+
+O cluster de VMs (Vagrant + Ansible) está validado com mestre e dois workers.
+O [guia do cluster](docs/cluster.md) contém comandos, configuração de recursos e
+evidências; o [protocolo MPI](docs/protocolo-mpi.md) descreve mensagens, políticas,
+métricas e o tratamento de falhas.
+
+Experimentos e falhas (executar no mestre do cluster, em `/opt/projeto-sd/code`):
+
+```bash
+# sequencial + MPI, com aquecimento e 5 repetições; grava execucoes.csv e resumo.json
+python3 -m scripts.experimentos.executar /opt/projeto-sd/dados/enem_2023_real.csv \
+  --saida-dir /opt/projeto-sd/resultados/teste --workers 1 2 \
+  --hostfile /opt/projeto-sd/hostfile --rede 192.168.56.0/24 --ambiente vm
+
+# job com checkpoint, relançado automaticamente se um worker cair
+python3 -m scripts.experimentos.com_retomada /opt/projeto-sd/dados/enem_2023_real.csv \
+  --saida /opt/projeto-sd/resultados/r.json --checkpoint /opt/projeto-sd/resultados/r.jsonl \
+  --hostfile /opt/projeto-sd/hostfile --rede 192.168.56.0/24
+```
+
+Neste computador, o caminho mais rápido é o cluster em containers no WSL
+(`python3 -m scripts.cluster.docker subir --workers 8`, ver o guia do cluster).
+
+As medições guardadas em `resultados/` foram feitas em VMs e em containers no mesmo computador;
+os nós dividem a CPU do host e a rede é virtual.
 
 Os dados **não** são versionados no Git. O script `scripts/obter_dados.py` gerencia tanto o download dos microdados oficiais do INEP quanto a geração sintética para testes:
 

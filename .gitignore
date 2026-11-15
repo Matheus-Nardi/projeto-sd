@@ -29,6 +29,9 @@ venv/
 
 # Infra
 .vagrant/
+.cluster/
+.tools/
+infra/ansible/inventory.local.yml
 
 # Sistema / editores
 .DS_Store

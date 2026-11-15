@@ -53,9 +53,9 @@ Termos que descrevem o cenário, cada um sob um aspecto:
 - **Decidido (21/10/2026): um ambiente por etapa.**
   - **Desenvolvimento:** máquina local ou Docker (`mpirun -n 4` numa máquina só já roda 4 processos).
   - **Validação:** VMs com **Ubuntu Server** sem interface gráfica, criadas com **Vagrant** (`Vagrantfile` no repositório): 1 mestre + 2 a 3 workers, rede interna com IPs fixos e SSH. Servem para testar rede real e falhas (desligar uma VM).
-  - **Medição:** notebooks físicos do grupo em rede, porque VMs na mesma máquina dividem a CPU e distorcem o speedup.
+  - **Medição (atualizado em 15/11/2026):** cluster em containers Docker no WSL, num host de 16 núcleos/32 threads, com um processo por container. A medição em notebooks físicos, prevista no pré-projeto, foi descartada. Limite assumido: os nós dividem a CPU do mesmo computador e a rede é uma ponte virtual, então o custo de rede real não aparece nas medições.
   - Motivo de usar distro comum: uma distro de cluster só automatiza a configuração que o MPI precisa (MPI igual em todos os nós, rede, SSH sem senha, hostfile, programa/dados acessíveis). Numa distro comum o grupo faz isso com scripts, tem mais controle e documenta a montagem como aprendizado. Clusters reais também costumam usar distros de uso geral.
-- **Decidido (21/10/2026): automação com Vagrant + Ansible.** Vagrant *cria* as VMs; Ansible *configura* os nós (instala Open MPI e `mpi4py`, distribui chaves SSH, gera o hostfile, copia o programa). Motivo: o mesmo playbook configura as VMs e os notebooks físicos (só troca o inventário), então validação e medição usam configuração idêntica. O grupo já usou Ansible em outras disciplinas. Quem usa Windows precisa de WSL para rodar o Ansible.
+- **Decidido (21/10/2026): automação com Vagrant + Ansible.** Vagrant *cria* as VMs; Ansible *configura* os nós (instala Open MPI e `mpi4py`, distribui chaves SSH, gera o hostfile, copia o programa). Motivo: a mesma role configura as VMs e os containers, então validação e medição usam configuração idêntica. O grupo já usou Ansible em outras disciplinas. Quem usa Windows precisa de WSL para rodar o Ansible.
 - **Alternativa avaliada:** PelicanHPC (Debian, live, Open MPI e Ganglia prontos; workers dão boot pela rede; v6.1 de set/2025). Rocks Cluster descontinuada (2017).
 
 ### Comunicação / implementação
@@ -89,8 +89,8 @@ Aulas e entregas às quintas-feiras. Cronograma pouco folgado: as semanas 1 e 2 
 | Semana 1 | 29/10/2026 | Análise dos datasets; escolha do dataset e da pergunta |
 | Semana 2 | 05/11/2026 | Cluster de validação (VMs Ubuntu Server + Vagrant + Ansible) |
 | Semana 3 | 12/11/2026 | Versão sequencial de referência + primeira versão distribuída (estática) |
-| Semana 4 | 19/11/2026 | Fila dinâmica + experimento de escalabilidade (notebooks físicos) |
-| Semana 5 | 26/11/2026 | Tolerância a falhas + experimento estático × dinâmico (notebooks físicos) |
+| Semana 4 | 19/11/2026 | Fila dinâmica + experimento de escalabilidade |
+| Semana 5 | 26/11/2026 | Tolerância a falhas + experimento estático × dinâmico |
 | Final | 03/12/2026 | Consolidação e apresentação final |
 
 ## Organização do grupo
@@ -104,7 +104,7 @@ Aulas e entregas às quintas-feiras. Cronograma pouco folgado: as semanas 1 e 2 
 Com 3 integrantes e 6 semanas, papéis fixos por frente rendem mais que rodízio (sem tempo de adaptação a cada semana). Não há revisor dedicado. Mesmo com papéis fixos, a tendência é todos participarem um pouco de tudo: o papel indica quem responde pela frente, não um limite.
 - **Dados e documentação:** análise e preparo dos datasets (scripts, seed, checksum); consolida os relatórios semanais; slides; mantém este arquivo atualizado. Responsável: Matheus Nardi
 - **Desenvolvimento:** código MPI (mestre, workers, fila dinâmica, tolerância a falhas) e versão sequencial de referência. Responsável: Alêkson Castro
-- **Infraestrutura e experimentos:** Vagrant + Ansible, cluster de VMs, configuração dos notebooks; roda os experimentos, coleta métricas e gera gráficos. Responsável: Italo Beckman
+- **Infraestrutura e experimentos:** Vagrant + Ansible, cluster de VMs e de containers; roda os experimentos, coleta métricas e gera gráficos. Responsável: Italo Beckman
 - **Contratos entre as frentes:** desenvolvimento entrega um programa que roda com `mpirun`; infraestrutura entrega um cluster onde esse comando funciona; dados entrega o arquivo no formato combinado.
 - **Relatórios:** cada um escreve a parte da sua frente; quem cuida da documentação consolida; todos leem o PDF antes da entrega (substitui o revisor).
 - **Apresentações:** cada um apresenta a parte que conduziu.
@@ -117,7 +117,17 @@ projeto-sd/
 ├── README.md
 ├── ideia.md                # este arquivo: contexto e decisões
 ├── Makefile                # build dos relatórios (make ajuda)
-├── .gitignore              # ignora auxiliares do LaTeX e a pasta de dados
+├── Vagrantfile             # VMs do cluster de validação
+├── .gitignore              # ignora auxiliares do LaTeX, dados e arquivos gerados do cluster
+├── src/                    # núcleo de agregação, versão sequencial e versão MPI
+├── tests/                  # testes (python -m unittest discover -s tests) e fixtures/
+├── scripts/
+│   ├── obter_dados.py      # download/extração do ENEM e gerador sintético
+│   ├── cluster/            # preparar, conectar e validar as VMs; testes de infraestrutura
+│   └── experimentos/       # execução e registro das medições
+├── infra/                  # cluster.json (topologia), bootstrap.sh e ansible/ (playbooks e role)
+├── docs/                   # contrato de dados, protocolo MPI e guia do cluster
+├── resultados/             # medições pequenas e versionáveis dos experimentos
 ├── relatorios/
 │   ├── template/           # preâmbulo, capa, dados.tex (dados compartilhados), referencias.bib, img/logo, main.tex modelo e secoes/
 │   ├── pre-projeto/        # relatório do pré-projeto (make pre-projeto); segue o roteiro abaixo, não as 7 seções semanais
@@ -158,9 +168,50 @@ projeto-sd/
 
 ## Próximos passos
 
+- **Cluster em Docker no WSL (15/11/2026):** `scripts/cluster/docker.py` sobe
+  mestre + N workers em containers com a mesma role Ansible; é o ambiente de
+  desenvolvimento e de medição (ver "Ambiente de execução"). Motivo: com
+  o WSL2 ativo, o VirtualBox roda sobre o Hyper-V e fica lento e instável com
+  mais de 1 vCPU por VM. As VMs continuam sendo a validação com máquinas
+  separadas (1 vCPU cada). Medição com
+  8 workers: speedup de 7,2 na fila dinâmica (`resultados/docker-*`).
+
+- **Experimentos e falhas implementados (15/11/2026):** executor em
+  `scripts/experimentos/executar.py` (aquecimento, repetições, mediana, speedup,
+  conferência de corretude) com resultados exploratórios das VMs em `resultados/`.
+  **Decidido (15/11/2026): tolerância a falhas por checkpoint + reinício
+  supervisionado**, não por continuidade automática. Motivo: na prova feita nas
+  VMs, o Open MPI 4.1.6 aborta o job inteiro quando um processo morre. O mestre
+  grava cada bloco concluído e, ao relançar, só os blocos faltantes são
+  distribuídos aos nós que ainda respondem. Limite assumido: a queda do mestre
+  exige relançamento manual. Repositório reorganizado (`scripts/cluster/`,
+  `scripts/experimentos/`). Pendentes: 4 workers em VMs e gráficos.
+
+- **Versão distribuída implementada (15/11/2026):** `src/distribuido.py` com
+  divisão estática (rodízio) e fila dinâmica, validado nas VMs com a entrada
+  real: saídas idênticas à sequencial. **Decidido (15/11/2026):** o mestre envia
+  o texto cru das linhas e os workers interpretam o CSV, para reduzir a parte
+  sequencial (Lei de Amdahl); o mestre mantém no máximo uma tarefa em voo por
+  worker. Ver `docs/protocolo-mpi.md`.
+
+- **Infraestrutura implementada (15/11/2026):** Vagrant/Ansible com topologia
+  configurável, chaves próprias por nó e troca apenas de material público após
+  todos estarem prontos. Código/dados de execução ficam em disco Linux e o
+  compartilhamento das VMs é somente leitura. Provisionamento idempotente e
+  comunicação MPI comprovados em containers e, depois, nas VMs.
+  Ver `docs/cluster.md`.
+  Nenhum commit deve ser feito sem aval explícito do usuário.
+
+- **Implementação iniciada (15/11/2026):** referência sequencial em `src/`, com
+  leitura em blocos e testes manuais. A pergunta usa UF da aplicação da prova e
+  tipo de escola do ensino médio (`TP_ESCOLA`), mantendo não respondentes separados.
+  Elegibilidade e contagem são independentes por prova; notas zero são incluídas
+  para presentes. Somas em décimos inteiros, médias finais com duas casas e
+  `ROUND_HALF_UP`. Ver `docs/contrato-dados.md`.
+
 - [x] Definir o cenário (mestre/workers)
 - [x] Analisar datasets candidatos e definir a pergunta que o sistema responde
-- [x] Definir o ambiente (local/Docker → VMs Ubuntu com Vagrant → notebooks físicos) e a comunicação (MPI), com automação via Vagrant + Ansible
+- [x] Definir o ambiente (local/Docker → VMs Ubuntu com Vagrant) e a comunicação (MPI), com automação via Vagrant + Ansible
 - [x] Definir o modelo de papéis (fixos, um por frente)
 - [x] Definir quem assume cada papel
 - [x] Criar o repositório no GitHub e convidar os integrantes

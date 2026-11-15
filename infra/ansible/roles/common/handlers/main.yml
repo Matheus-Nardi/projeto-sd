@@ -1,0 +1,6 @@
+---
+- name: Recarregar SSH
+  ansible.builtin.service:
+    name: ssh
+    state: reloaded
+  when: cluster_manage_services | bool

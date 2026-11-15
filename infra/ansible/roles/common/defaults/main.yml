@@ -1,0 +1,7 @@
+---
+cluster_user: mpi
+cluster_root: /opt/projeto-sd
+cluster_nodes: []
+cluster_source_dir: "{{ playbook_dir }}/../.."
+cluster_source_remote: false
+cluster_manage_services: true

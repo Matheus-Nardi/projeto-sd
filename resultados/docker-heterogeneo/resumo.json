@@ -1,0 +1,90 @@
+{
+  "data": "15/11/2026 21:06",
+  "rotulo": "containers Docker no WSL2, 8 workers, worker 1 com atraso de 50 ms por tarefa; rodou junto com a serie de escalabilidade",
+  "ambiente": "local",
+  "commit": "nao-commitado",
+  "entrada": {
+    "sha256": "e3d4e5c7e2d07db0ea501690dd2f6b49de3566e7eb45835deac47490d4f65169",
+    "linhas": 3933955,
+    "bytes": 119442253,
+    "arquivo": "/opt/projeto-sd/dados/enem_2023_real.csv"
+  },
+  "bloco_linhas": 10000,
+  "atrasos": [
+    "1=0.05"
+  ],
+  "repeticoes": 5,
+  "aquecimento": 1,
+  "timeout_s": 600,
+  "hostfile": [
+    "master slots=1",
+    "worker1 slots=1",
+    "worker2 slots=1",
+    "worker3 slots=1",
+    "worker4 slots=1",
+    "worker5 slots=1",
+    "worker6 slots=1",
+    "worker7 slots=1",
+    "worker8 slots=1"
+  ],
+  "rede": null,
+  "maquina": {
+    "hostname": "master",
+    "cpus": 32,
+    "plataforma": "Linux-6.18.58.1-microsoft-standard-WSL2-x86_64-with-glibc2.39",
+    "python": "3.12.3"
+  },
+  "versoes": {
+    "mpi": "Open MPI v4.1.6, package: Debian OpenMPI, ident: 4.1.6, repo rev: v4.1.6, Sep 30, 2023\u0000",
+    "mpi4py": "3.1.5",
+    "python": "3.12.3"
+  },
+  "observacao": "tempo_total_s é medido dentro do programa (exclui o lançamento do mpirun); tempo_externo_s inclui o lançamento. O mestre é dedicado: W workers usam W+1 processos.",
+  "cenarios": [
+    {
+      "cenario": "sequencial",
+      "modo": "sequencial",
+      "politica": null,
+      "workers": 0,
+      "repeticoes": 5,
+      "mediana_s": 29.549496321000333,
+      "min_s": 29.19378427599986,
+      "max_s": 30.0604593019998,
+      "desvio_padrao_s": 0.32986639333380907,
+      "speedup_vs_sequencial": 1.0,
+      "speedup_vs_mpi_1": null,
+      "eficiencia_vs_sequencial": null,
+      "eficiencia_vs_mpi_1": null
+    },
+    {
+      "cenario": "mpi-estatica-8w",
+      "modo": "mpi",
+      "politica": "estatica",
+      "workers": 8,
+      "repeticoes": 5,
+      "mediana_s": 6.784095005,
+      "min_s": 6.686746333,
+      "max_s": 6.947543021,
+      "desvio_padrao_s": 0.10903170903009357,
+      "speedup_vs_sequencial": 4.355702020567493,
+      "speedup_vs_mpi_1": null,
+      "eficiencia_vs_sequencial": 0.5444627525709366,
+      "eficiencia_vs_mpi_1": null
+    },
+    {
+      "cenario": "mpi-dinamica-8w",
+      "modo": "mpi",
+      "politica": "dinamica",
+      "workers": 8,
+      "repeticoes": 5,
+      "mediana_s": 4.743680114,
+      "min_s": 4.618980872,
+      "max_s": 4.79522078,
+      "desvio_padrao_s": 0.07094051447505828,
+      "speedup_vs_sequencial": 6.229234604962305,
+      "speedup_vs_mpi_1": null,
+      "eficiencia_vs_sequencial": 0.7786543256202881,
+      "eficiencia_vs_mpi_1": null
+    }
+  ]
+}

@@ -1,0 +1,6 @@
+---
+- name: Preparar cada nó sem depender da disponibilidade dos demais
+  hosts: cluster
+  become: true
+  roles:
+    - common

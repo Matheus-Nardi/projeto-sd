@@ -1,0 +1,36 @@
+---
+- name: Preparar entrada em disco Linux do mestre fora das medições
+  hosts: master
+  become: true
+  vars:
+    cluster_user: mpi
+    cluster_root: /opt/projeto-sd
+  tasks:
+    - name: Exigir caminho explícito para o CSV de origem no mestre
+      ansible.builtin.assert:
+        that:
+          - cluster_data_source is defined
+          - cluster_data_source is match('^/')
+        fail_msg: Informe cluster_data_source com um caminho absoluto no mestre.
+
+    - name: Copiar CSV para o disco Linux
+      ansible.builtin.copy:
+        src: "{{ cluster_data_source }}"
+        dest: "{{ cluster_root }}/dados/{{ cluster_data_source | basename }}"
+        remote_src: true
+        owner: "{{ cluster_user }}"
+        group: "{{ cluster_user }}"
+        mode: '0644'
+
+    - name: Calcular checksum da entrada preparada
+      ansible.builtin.stat:
+        path: "{{ cluster_root }}/dados/{{ cluster_data_source | basename }}"
+        checksum_algorithm: sha256
+      register: cluster_data_stat
+
+    - name: Informar arquivo e checksum para os experimentos
+      ansible.builtin.debug:
+        msg:
+          arquivo: "{{ cluster_root }}/dados/{{ cluster_data_source | basename }}"
+          sha256: "{{ cluster_data_stat.stat.checksum }}"
+          bytes: "{{ cluster_data_stat.stat.size }}"

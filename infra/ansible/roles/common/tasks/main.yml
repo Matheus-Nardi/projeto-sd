@@ -1,0 +1,162 @@
+---
+- name: Validar plataforma e topologia
+  ansible.builtin.assert:
+    that:
+      - ansible_facts.distribution == 'Ubuntu'
+      - ansible_facts.distribution_version == '24.04'
+      - cluster_nodes | length >= 2
+      - inventory_hostname in (cluster_nodes | map(attribute='name') | list)
+      - (cluster_nodes | selectattr('name', 'equalto', inventory_hostname) | first).slots | int <= ansible_facts.processor_vcpus | int
+    fail_msg: Este playbook requer Ubuntu 24.04 e uma topologia explícita.
+
+- name: Instalar a pilha MPI do Ubuntu
+  ansible.builtin.apt:
+    name:
+      - python3
+      - python3-mpi4py
+      - openmpi-bin
+      - openssh-server
+      - openssh-client
+      - acl
+    state: present
+    update_cache: true
+    cache_valid_time: 3600
+
+- name: Gerar identidade SSH de host exclusiva do nó
+  ansible.builtin.command:
+    argv:
+      - ssh-keygen
+      - -t
+      - ed25519
+      - -N
+      - ''
+      - -C
+      - "projeto-sd-host-{{ inventory_hostname }}"
+      - -f
+      - /etc/ssh/ssh_host_projeto_sd_ed25519_key
+    creates: /etc/ssh/ssh_host_projeto_sd_ed25519_key
+  notify: Recarregar SSH
+
+- name: Usar identidade exclusiva em vez das chaves herdadas da box
+  ansible.builtin.copy:
+    content: "HostKey /etc/ssh/ssh_host_projeto_sd_ed25519_key\n"
+    dest: /etc/ssh/sshd_config.d/90-projeto-sd-hostkey.conf
+    owner: root
+    group: root
+    mode: '0644'
+  notify: Recarregar SSH
+
+- name: Validar configuração completa do servidor SSH
+  ansible.builtin.command: /usr/sbin/sshd -t
+  changed_when: false
+
+- name: Criar conta exclusiva do cluster
+  ansible.builtin.user:
+    name: "{{ cluster_user }}"
+    shell: /bin/bash
+    create_home: true
+
+- name: Preparar diretórios em disco Linux
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: directory
+    owner: "{{ cluster_user }}"
+    group: "{{ cluster_user }}"
+    mode: '0755'
+  loop:
+    - "{{ cluster_root }}"
+    - "{{ cluster_root }}/code"
+    - "{{ cluster_root }}/code/infra"
+    - "{{ cluster_root }}/dados"
+    - "{{ cluster_root }}/resultados"
+
+- name: Preparar diretório SSH exclusivo
+  ansible.builtin.file:
+    path: "/home/{{ cluster_user }}/.ssh"
+    state: directory
+    owner: "{{ cluster_user }}"
+    group: "{{ cluster_user }}"
+    mode: '0700'
+
+- name: Gerar chave própria do nó uma única vez
+  ansible.builtin.command:
+    argv:
+      - ssh-keygen
+      - -t
+      - ed25519
+      - -N
+      - ''
+      - -C
+      - "projeto-sd-{{ inventory_hostname }}"
+      - -f
+      - "/home/{{ cluster_user }}/.ssh/id_ed25519"
+    creates: "/home/{{ cluster_user }}/.ssh/id_ed25519"
+  become_user: "{{ cluster_user }}"
+
+- name: Resolver nomes pela rede privada
+  ansible.builtin.blockinfile:
+    path: /etc/hosts
+    # /etc/hosts é um bind mount nos testes isolados em Docker.
+    unsafe_writes: true
+    marker: '# {mark} PROJETO-SD'
+    block: |
+      {% for node in cluster_nodes %}
+      {{ node.ip }} {{ node.name }}
+      {% endfor %}
+
+- name: Copiar código para disco Linux
+  ansible.builtin.copy:
+    src: "{{ cluster_source_dir }}/{{ item }}"
+    dest: "{{ cluster_root }}/code/"
+    remote_src: "{{ cluster_source_remote }}"
+    owner: "{{ cluster_user }}"
+    group: "{{ cluster_user }}"
+    mode: preserve
+  loop:
+    - src
+    - scripts
+    - tests
+
+- name: Copiar configuração usada pelos utilitários e testes
+  ansible.builtin.copy:
+    src: "{{ cluster_source_dir }}/infra/cluster.json"
+    dest: "{{ cluster_root }}/code/infra/cluster.json"
+    remote_src: "{{ cluster_source_remote }}"
+    owner: "{{ cluster_user }}"
+    group: "{{ cluster_user }}"
+    mode: '0644'
+
+- name: Gerar hostfile com mestre e workers
+  ansible.builtin.template:
+    src: hostfile.j2
+    dest: "{{ cluster_root }}/hostfile"
+    owner: "{{ cluster_user }}"
+    group: "{{ cluster_user }}"
+    mode: '0644'
+
+- name: Iniciar SSH
+  ansible.builtin.service:
+    name: ssh
+    enabled: true
+    state: started
+  when: cluster_manage_services | bool
+
+- name: Coletar versões efetivamente instaladas
+  ansible.builtin.command:
+    argv:
+      - /usr/bin/python3
+      - -c
+      - >-
+        import json, platform, mpi4py; from mpi4py import MPI;
+        print(json.dumps(dict(python=platform.python_version(), mpi4py=mpi4py.__version__,
+        mpi=MPI.Get_library_version().strip()), sort_keys=True))
+  changed_when: false
+  register: cluster_versions
+
+- name: Registrar versões sem incluir horários variáveis
+  ansible.builtin.copy:
+    content: "{{ cluster_versions.stdout }}\n"
+    dest: "{{ cluster_root }}/versions.json"
+    owner: "{{ cluster_user }}"
+    group: "{{ cluster_user }}"
+    mode: '0644'
