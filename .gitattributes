@@ -1,0 +1,7 @@
+# Arquivos executados em Linux (VMs e containers) precisam de LF mesmo em checkouts no Windows
+*.sh text eol=lf
+*.py text eol=lf
+*.yml text eol=lf
+*.j2 text eol=lf
+Dockerfile text eol=lf
+Vagrantfile text eol=lf

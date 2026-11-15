@@ -17,7 +17,7 @@ Sistema mestre/workers (padrão MapReduce) para processamento de alto volume de 
 | `scripts/` | `obter_dados.py` (download/extração do ENEM e gerador sintético); `cluster/` (preparar, conectar e validar as VMs; testes de infraestrutura); `experimentos/` (execução e registro das medições) |
 | `infra/` | `cluster.json` (topologia), `bootstrap.sh` e `ansible/` (playbooks e role) |
 | `docs/` | Contrato de dados, protocolo MPI e guia do cluster |
-| `resultados/` | Medições pequenas e versionáveis dos experimentos |
+| `resultados/` | Medições dos experimentos, evidência das falhas (`vm-falhas/`) e o resultado da análise do ENEM 2023 (`enem-2023/resultado.json`) |
 
 ## Relatórios em LaTeX
 

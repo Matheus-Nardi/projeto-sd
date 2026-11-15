@@ -124,10 +124,10 @@ projeto-sd/
 ├── scripts/
 │   ├── obter_dados.py      # download/extração do ENEM e gerador sintético
 │   ├── cluster/            # preparar, conectar e validar as VMs; testes de infraestrutura
-│   └── experimentos/       # execução e registro das medições
+│   └── experimentos/       # execução e registro das medições; provas de falha (prova_*.sh)
 ├── infra/                  # cluster.json (topologia), bootstrap.sh e ansible/ (playbooks e role)
 ├── docs/                   # contrato de dados, protocolo MPI e guia do cluster
-├── resultados/             # medições pequenas e versionáveis dos experimentos
+├── resultados/             # medições dos experimentos, evidência das falhas e resultado da análise (enem-2023/)
 ├── relatorios/
 │   ├── template/           # preâmbulo, capa, dados.tex (dados compartilhados), referencias.bib, img/logo, main.tex modelo e secoes/
 │   ├── pre-projeto/        # relatório do pré-projeto (make pre-projeto); segue o roteiro abaixo, não as 7 seções semanais

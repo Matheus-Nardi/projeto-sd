@@ -1,0 +1,1144 @@
+{
+  "contrato": "enem-uf-escola-v1",
+  "entrada": {
+    "sha256": "e3d4e5c7e2d07db0ea501690dd2f6b49de3566e7eb45835deac47490d4f65169",
+    "linhas": 3933955,
+    "bytes": 119442253
+  },
+  "grupos": [
+    {
+      "uf": "AC",
+      "tp_escola": "1",
+      "mt": {
+        "soma_decimos": 49758616,
+        "contagem": 10119,
+        "media": "491.73"
+      },
+      "redacao": {
+        "soma_decimos": 62436400,
+        "contagem": 10835,
+        "media": "576.25"
+      }
+    },
+    {
+      "uf": "AC",
+      "tp_escola": "2",
+      "mt": {
+        "soma_decimos": 22161785,
+        "contagem": 4624,
+        "media": "479.28"
+      },
+      "redacao": {
+        "soma_decimos": 27897400,
+        "contagem": 4913,
+        "media": "567.83"
+      }
+    },
+    {
+      "uf": "AC",
+      "tp_escola": "3",
+      "mt": {
+        "soma_decimos": 2482752,
+        "contagem": 411,
+        "media": "604.08"
+      },
+      "redacao": {
+        "soma_decimos": 3330200,
+        "contagem": 414,
+        "media": "804.40"
+      }
+    },
+    {
+      "uf": "AL",
+      "tp_escola": "1",
+      "mt": {
+        "soma_decimos": 179625750,
+        "contagem": 35024,
+        "media": "512.86"
+      },
+      "redacao": {
+        "soma_decimos": 220577000,
+        "contagem": 36680,
+        "media": "601.35"
+      }
+    },
+    {
+      "uf": "AL",
+      "tp_escola": "2",
+      "mt": {
+        "soma_decimos": 77502528,
+        "contagem": 16175,
+        "media": "479.15"
+      },
+      "redacao": {
+        "soma_decimos": 94186000,
+        "contagem": 17026,
+        "media": "553.19"
+      }
+    },
+    {
+      "uf": "AL",
+      "tp_escola": "3",
+      "mt": {
+        "soma_decimos": 23377358,
+        "contagem": 4002,
+        "media": "584.14"
+      },
+      "redacao": {
+        "soma_decimos": 29833600,
+        "contagem": 4055,
+        "media": "735.72"
+      }
+    },
+    {
+      "uf": "AM",
+      "tp_escola": "1",
+      "mt": {
+        "soma_decimos": 131680082,
+        "contagem": 26939,
+        "media": "488.81"
+      },
+      "redacao": {
+        "soma_decimos": 159325200,
+        "contagem": 29103,
+        "media": "547.45"
+      }
+    },
+    {
+      "uf": "AM",
+      "tp_escola": "2",
+      "mt": {
+        "soma_decimos": 93573950,
+        "contagem": 20134,
+        "media": "464.76"
+      },
+      "redacao": {
+        "soma_decimos": 108207400,
+        "contagem": 21195,
+        "media": "510.53"
+      }
+    },
+    {
+      "uf": "AM",
+      "tp_escola": "3",
+      "mt": {
+        "soma_decimos": 11292507,
+        "contagem": 1870,
+        "media": "603.88"
+      },
+      "redacao": {
+        "soma_decimos": 13661400,
+        "contagem": 1885,
+        "media": "724.74"
+      }
+    },
+    {
+      "uf": "AP",
+      "tp_escola": "1",
+      "mt": {
+        "soma_decimos": 59308524,
+        "contagem": 12303,
+        "media": "482.07"
+      },
+      "redacao": {
+        "soma_decimos": 74099000,
+        "contagem": 13289,
+        "media": "557.60"
+      }
+    },
+    {
+      "uf": "AP",
+      "tp_escola": "2",
+      "mt": {
+        "soma_decimos": 24996525,
+        "contagem": 5338,
+        "media": "468.28"
+      },
+      "redacao": {
+        "soma_decimos": 32533400,
+        "contagem": 5616,
+        "media": "579.30"
+      }
+    },
+    {
+      "uf": "AP",
+      "tp_escola": "3",
+      "mt": {
+        "soma_decimos": 3563039,
+        "contagem": 618,
+        "media": "576.54"
+      },
+      "redacao": {
+        "soma_decimos": 4673400,
+        "contagem": 619,
+        "media": "754.99"
+      }
+    },
+    {
+      "uf": "BA",
+      "tp_escola": "1",
+      "mt": {
+        "soma_decimos": 767697888,
+        "contagem": 152283,
+        "media": "504.13"
+      },
+      "redacao": {
+        "soma_decimos": 952988800,
+        "contagem": 158989,
+        "media": "599.41"
+      }
+    },
+    {
+      "uf": "BA",
+      "tp_escola": "2",
+      "mt": {
+        "soma_decimos": 267262380,
+        "contagem": 55142,
+        "media": "484.68"
+      },
+      "redacao": {
+        "soma_decimos": 335237400,
+        "contagem": 57332,
+        "media": "584.73"
+      }
+    },
+    {
+      "uf": "BA",
+      "tp_escola": "3",
+      "mt": {
+        "soma_decimos": 84668107,
+        "contagem": 13920,
+        "media": "608.25"
+      },
+      "redacao": {
+        "soma_decimos": 108373400,
+        "contagem": 14031,
+        "media": "772.39"
+      }
+    },
+    {
+      "uf": "CE",
+      "tp_escola": "1",
+      "mt": {
+        "soma_decimos": 498976175,
+        "contagem": 91531,
+        "media": "545.14"
+      },
+      "redacao": {
+        "soma_decimos": 611827200,
+        "contagem": 94914,
+        "media": "644.61"
+      }
+    },
+    {
+      "uf": "CE",
+      "tp_escola": "2",
+      "mt": {
+        "soma_decimos": 366787309,
+        "contagem": 75695,
+        "media": "484.56"
+      },
+      "redacao": {
+        "soma_decimos": 430405000,
+        "contagem": 78067,
+        "media": "551.33"
+      }
+    },
+    {
+      "uf": "CE",
+      "tp_escola": "3",
+      "mt": {
+        "soma_decimos": 48732491,
+        "contagem": 7658,
+        "media": "636.36"
+      },
+      "redacao": {
+        "soma_decimos": 61199200,
+        "contagem": 7728,
+        "media": "791.92"
+      }
+    },
+    {
+      "uf": "DF",
+      "tp_escola": "1",
+      "mt": {
+        "soma_decimos": 163628967,
+        "contagem": 29261,
+        "media": "559.20"
+      },
+      "redacao": {
+        "soma_decimos": 194352600,
+        "contagem": 31079,
+        "media": "625.35"
+      }
+    },
+    {
+      "uf": "DF",
+      "tp_escola": "2",
+      "mt": {
+        "soma_decimos": 75554110,
+        "contagem": 14837,
+        "media": "509.23"
+      },
+      "redacao": {
+        "soma_decimos": 91665400,
+        "contagem": 15570,
+        "media": "588.73"
+      }
+    },
+    {
+      "uf": "DF",
+      "tp_escola": "3",
+      "mt": {
+        "soma_decimos": 41144607,
+        "contagem": 6435,
+        "media": "639.39"
+      },
+      "redacao": {
+        "soma_decimos": 49309200,
+        "contagem": 6520,
+        "media": "756.28"
+      }
+    },
+    {
+      "uf": "ES",
+      "tp_escola": "1",
+      "mt": {
+        "soma_decimos": 153236602,
+        "contagem": 27433,
+        "media": "558.58"
+      },
+      "redacao": {
+        "soma_decimos": 182980000,
+        "contagem": 29118,
+        "media": "628.41"
+      }
+    },
+    {
+      "uf": "ES",
+      "tp_escola": "2",
+      "mt": {
+        "soma_decimos": 100117314,
+        "contagem": 18692,
+        "media": "535.62"
+      },
+      "redacao": {
+        "soma_decimos": 122916600,
+        "contagem": 19680,
+        "media": "624.58"
+      }
+    },
+    {
+      "uf": "ES",
+      "tp_escola": "3",
+      "mt": {
+        "soma_decimos": 21727894,
+        "contagem": 3354,
+        "media": "647.82"
+      },
+      "redacao": {
+        "soma_decimos": 27105600,
+        "contagem": 3410,
+        "media": "794.89"
+      }
+    },
+    {
+      "uf": "GO",
+      "tp_escola": "1",
+      "mt": {
+        "soma_decimos": 282473081,
+        "contagem": 52342,
+        "media": "539.67"
+      },
+      "redacao": {
+        "soma_decimos": 354731800,
+        "contagem": 55586,
+        "media": "638.17"
+      }
+    },
+    {
+      "uf": "GO",
+      "tp_escola": "2",
+      "mt": {
+        "soma_decimos": 185000210,
+        "contagem": 36853,
+        "media": "501.99"
+      },
+      "redacao": {
+        "soma_decimos": 231303800,
+        "contagem": 39280,
+        "media": "588.86"
+      }
+    },
+    {
+      "uf": "GO",
+      "tp_escola": "3",
+      "mt": {
+        "soma_decimos": 48189449,
+        "contagem": 7602,
+        "media": "633.90"
+      },
+      "redacao": {
+        "soma_decimos": 61318200,
+        "contagem": 7698,
+        "media": "796.55"
+      }
+    },
+    {
+      "uf": "MA",
+      "tp_escola": "1",
+      "mt": {
+        "soma_decimos": 363146371,
+        "contagem": 74624,
+        "media": "486.63"
+      },
+      "redacao": {
+        "soma_decimos": 455710000,
+        "contagem": 78276,
+        "media": "582.18"
+      }
+    },
+    {
+      "uf": "MA",
+      "tp_escola": "2",
+      "mt": {
+        "soma_decimos": 160576956,
+        "contagem": 34707,
+        "media": "462.66"
+      },
+      "redacao": {
+        "soma_decimos": 202357200,
+        "contagem": 36337,
+        "media": "556.89"
+      }
+    },
+    {
+      "uf": "MA",
+      "tp_escola": "3",
+      "mt": {
+        "soma_decimos": 21948598,
+        "contagem": 3687,
+        "media": "595.30"
+      },
+      "redacao": {
+        "soma_decimos": 29173600,
+        "contagem": 3719,
+        "media": "784.45"
+      }
+    },
+    {
+      "uf": "MG",
+      "tp_escola": "1",
+      "mt": {
+        "soma_decimos": 946634326,
+        "contagem": 166335,
+        "media": "569.11"
+      },
+      "redacao": {
+        "soma_decimos": 1131458400,
+        "contagem": 174116,
+        "media": "649.83"
+      }
+    },
+    {
+      "uf": "MG",
+      "tp_escola": "2",
+      "mt": {
+        "soma_decimos": 356865658,
+        "contagem": 66685,
+        "media": "535.15"
+      },
+      "redacao": {
+        "soma_decimos": 434322600,
+        "contagem": 69991,
+        "media": "620.54"
+      }
+    },
+    {
+      "uf": "MG",
+      "tp_escola": "3",
+      "mt": {
+        "soma_decimos": 122175768,
+        "contagem": 18227,
+        "media": "670.30"
+      },
+      "redacao": {
+        "soma_decimos": 150177800,
+        "contagem": 18375,
+        "media": "817.29"
+      }
+    },
+    {
+      "uf": "MS",
+      "tp_escola": "1",
+      "mt": {
+        "soma_decimos": 94874901,
+        "contagem": 17837,
+        "media": "531.90"
+      },
+      "redacao": {
+        "soma_decimos": 112383200,
+        "contagem": 19137,
+        "media": "587.26"
+      }
+    },
+    {
+      "uf": "MS",
+      "tp_escola": "2",
+      "mt": {
+        "soma_decimos": 56841084,
+        "contagem": 11319,
+        "media": "502.17"
+      },
+      "redacao": {
+        "soma_decimos": 68220000,
+        "contagem": 11927,
+        "media": "571.98"
+      }
+    },
+    {
+      "uf": "MS",
+      "tp_escola": "3",
+      "mt": {
+        "soma_decimos": 14513464,
+        "contagem": 2302,
+        "media": "630.47"
+      },
+      "redacao": {
+        "soma_decimos": 17713600,
+        "contagem": 2341,
+        "media": "756.67"
+      }
+    },
+    {
+      "uf": "MT",
+      "tp_escola": "1",
+      "mt": {
+        "soma_decimos": 122641591,
+        "contagem": 23595,
+        "media": "519.78"
+      },
+      "redacao": {
+        "soma_decimos": 145856400,
+        "contagem": 25055,
+        "media": "582.14"
+      }
+    },
+    {
+      "uf": "MT",
+      "tp_escola": "2",
+      "mt": {
+        "soma_decimos": 75133617,
+        "contagem": 15332,
+        "media": "490.04"
+      },
+      "redacao": {
+        "soma_decimos": 91281800,
+        "contagem": 16214,
+        "media": "562.98"
+      }
+    },
+    {
+      "uf": "MT",
+      "tp_escola": "3",
+      "mt": {
+        "soma_decimos": 18301695,
+        "contagem": 2931,
+        "media": "624.42"
+      },
+      "redacao": {
+        "soma_decimos": 23367800,
+        "contagem": 2967,
+        "media": "787.59"
+      }
+    },
+    {
+      "uf": "PA",
+      "tp_escola": "1",
+      "mt": {
+        "soma_decimos": 512795951,
+        "contagem": 106200,
+        "media": "482.86"
+      },
+      "redacao": {
+        "soma_decimos": 645138400,
+        "contagem": 112288,
+        "media": "574.54"
+      }
+    },
+    {
+      "uf": "PA",
+      "tp_escola": "2",
+      "mt": {
+        "soma_decimos": 188652987,
+        "contagem": 40216,
+        "media": "469.10"
+      },
+      "redacao": {
+        "soma_decimos": 241032800,
+        "contagem": 41973,
+        "media": "574.26"
+      }
+    },
+    {
+      "uf": "PA",
+      "tp_escola": "3",
+      "mt": {
+        "soma_decimos": 43694109,
+        "contagem": 7497,
+        "media": "582.82"
+      },
+      "redacao": {
+        "soma_decimos": 59455600,
+        "contagem": 7579,
+        "media": "784.48"
+      }
+    },
+    {
+      "uf": "PB",
+      "tp_escola": "1",
+      "mt": {
+        "soma_decimos": 316504856,
+        "contagem": 61424,
+        "media": "515.28"
+      },
+      "redacao": {
+        "soma_decimos": 390830800,
+        "contagem": 63587,
+        "media": "614.64"
+      }
+    },
+    {
+      "uf": "PB",
+      "tp_escola": "2",
+      "mt": {
+        "soma_decimos": 103374489,
+        "contagem": 21333,
+        "media": "484.58"
+      },
+      "redacao": {
+        "soma_decimos": 130085400,
+        "contagem": 22018,
+        "media": "590.81"
+      }
+    },
+    {
+      "uf": "PB",
+      "tp_escola": "3",
+      "mt": {
+        "soma_decimos": 32016073,
+        "contagem": 5232,
+        "media": "611.93"
+      },
+      "redacao": {
+        "soma_decimos": 41689600,
+        "contagem": 5262,
+        "media": "792.28"
+      }
+    },
+    {
+      "uf": "PE",
+      "tp_escola": "1",
+      "mt": {
+        "soma_decimos": 523499486,
+        "contagem": 98979,
+        "media": "528.90"
+      },
+      "redacao": {
+        "soma_decimos": 626490000,
+        "contagem": 103208,
+        "media": "607.02"
+      }
+    },
+    {
+      "uf": "PE",
+      "tp_escola": "2",
+      "mt": {
+        "soma_decimos": 228477343,
+        "contagem": 45401,
+        "media": "503.24"
+      },
+      "redacao": {
+        "soma_decimos": 278962600,
+        "contagem": 47060,
+        "media": "592.78"
+      }
+    },
+    {
+      "uf": "PE",
+      "tp_escola": "3",
+      "mt": {
+        "soma_decimos": 55159710,
+        "contagem": 8932,
+        "media": "617.55"
+      },
+      "redacao": {
+        "soma_decimos": 68344400,
+        "contagem": 9003,
+        "media": "759.13"
+      }
+    },
+    {
+      "uf": "PI",
+      "tp_escola": "1",
+      "mt": {
+        "soma_decimos": 237761978,
+        "contagem": 47170,
+        "media": "504.05"
+      },
+      "redacao": {
+        "soma_decimos": 296736800,
+        "contagem": 48874,
+        "media": "607.15"
+      }
+    },
+    {
+      "uf": "PI",
+      "tp_escola": "2",
+      "mt": {
+        "soma_decimos": 94876782,
+        "contagem": 20007,
+        "media": "474.22"
+      },
+      "redacao": {
+        "soma_decimos": 118632400,
+        "contagem": 20677,
+        "media": "573.74"
+      }
+    },
+    {
+      "uf": "PI",
+      "tp_escola": "3",
+      "mt": {
+        "soma_decimos": 24453246,
+        "contagem": 3871,
+        "media": "631.70"
+      },
+      "redacao": {
+        "soma_decimos": 32051800,
+        "contagem": 3886,
+        "media": "824.80"
+      }
+    },
+    {
+      "uf": "PR",
+      "tp_escola": "1",
+      "mt": {
+        "soma_decimos": 321236470,
+        "contagem": 57055,
+        "media": "563.03"
+      },
+      "redacao": {
+        "soma_decimos": 372738200,
+        "contagem": 60688,
+        "media": "614.19"
+      }
+    },
+    {
+      "uf": "PR",
+      "tp_escola": "2",
+      "mt": {
+        "soma_decimos": 242406485,
+        "contagem": 46627,
+        "media": "519.88"
+      },
+      "redacao": {
+        "soma_decimos": 282728400,
+        "contagem": 49559,
+        "media": "570.49"
+      }
+    },
+    {
+      "uf": "PR",
+      "tp_escola": "3",
+      "mt": {
+        "soma_decimos": 73950834,
+        "contagem": 11569,
+        "media": "639.22"
+      },
+      "redacao": {
+        "soma_decimos": 85702000,
+        "contagem": 11805,
+        "media": "725.98"
+      }
+    },
+    {
+      "uf": "RJ",
+      "tp_escola": "1",
+      "mt": {
+        "soma_decimos": 633035637,
+        "contagem": 114697,
+        "media": "551.92"
+      },
+      "redacao": {
+        "soma_decimos": 766293000,
+        "contagem": 122230,
+        "media": "626.93"
+      }
+    },
+    {
+      "uf": "RJ",
+      "tp_escola": "2",
+      "mt": {
+        "soma_decimos": 229658620,
+        "contagem": 45030,
+        "media": "510.01"
+      },
+      "redacao": {
+        "soma_decimos": 280428000,
+        "contagem": 47842,
+        "media": "586.15"
+      }
+    },
+    {
+      "uf": "RJ",
+      "tp_escola": "3",
+      "mt": {
+        "soma_decimos": 160123412,
+        "contagem": 25596,
+        "media": "625.58"
+      },
+      "redacao": {
+        "soma_decimos": 196827200,
+        "contagem": 25952,
+        "media": "758.43"
+      }
+    },
+    {
+      "uf": "RN",
+      "tp_escola": "1",
+      "mt": {
+        "soma_decimos": 268728219,
+        "contagem": 51312,
+        "media": "523.71"
+      },
+      "redacao": {
+        "soma_decimos": 323151800,
+        "contagem": 53141,
+        "media": "608.10"
+      }
+    },
+    {
+      "uf": "RN",
+      "tp_escola": "2",
+      "mt": {
+        "soma_decimos": 86812865,
+        "contagem": 17177,
+        "media": "505.40"
+      },
+      "redacao": {
+        "soma_decimos": 107842600,
+        "contagem": 17717,
+        "media": "608.70"
+      }
+    },
+    {
+      "uf": "RN",
+      "tp_escola": "3",
+      "mt": {
+        "soma_decimos": 28214032,
+        "contagem": 4573,
+        "media": "616.97"
+      },
+      "redacao": {
+        "soma_decimos": 36287400,
+        "contagem": 4601,
+        "media": "788.69"
+      }
+    },
+    {
+      "uf": "RO",
+      "tp_escola": "1",
+      "mt": {
+        "soma_decimos": 66706769,
+        "contagem": 13188,
+        "media": "505.81"
+      },
+      "redacao": {
+        "soma_decimos": 80779000,
+        "contagem": 13908,
+        "media": "580.81"
+      }
+    },
+    {
+      "uf": "RO",
+      "tp_escola": "2",
+      "mt": {
+        "soma_decimos": 45097526,
+        "contagem": 9218,
+        "media": "489.23"
+      },
+      "redacao": {
+        "soma_decimos": 56517400,
+        "contagem": 9704,
+        "media": "582.41"
+      }
+    },
+    {
+      "uf": "RO",
+      "tp_escola": "3",
+      "mt": {
+        "soma_decimos": 4391902,
+        "contagem": 731,
+        "media": "600.81"
+      },
+      "redacao": {
+        "soma_decimos": 5505400,
+        "contagem": 744,
+        "media": "739.97"
+      }
+    },
+    {
+      "uf": "RR",
+      "tp_escola": "1",
+      "mt": {
+        "soma_decimos": 20458169,
+        "contagem": 3924,
+        "media": "521.36"
+      },
+      "redacao": {
+        "soma_decimos": 24088400,
+        "contagem": 4188,
+        "media": "575.18"
+      }
+    },
+    {
+      "uf": "RR",
+      "tp_escola": "2",
+      "mt": {
+        "soma_decimos": 9805248,
+        "contagem": 1939,
+        "media": "505.69"
+      },
+      "redacao": {
+        "soma_decimos": 11862400,
+        "contagem": 2104,
+        "media": "563.80"
+      }
+    },
+    {
+      "uf": "RR",
+      "tp_escola": "3",
+      "mt": {
+        "soma_decimos": 1596143,
+        "contagem": 275,
+        "media": "580.42"
+      },
+      "redacao": {
+        "soma_decimos": 1929600,
+        "contagem": 280,
+        "media": "689.14"
+      }
+    },
+    {
+      "uf": "RS",
+      "tp_escola": "1",
+      "mt": {
+        "soma_decimos": 360343092,
+        "contagem": 64554,
+        "media": "558.20"
+      },
+      "redacao": {
+        "soma_decimos": 427763600,
+        "contagem": 69146,
+        "media": "618.64"
+      }
+    },
+    {
+      "uf": "RS",
+      "tp_escola": "2",
+      "mt": {
+        "soma_decimos": 198634479,
+        "contagem": 37086,
+        "media": "535.61"
+      },
+      "redacao": {
+        "soma_decimos": 241559000,
+        "contagem": 39505,
+        "media": "611.46"
+      }
+    },
+    {
+      "uf": "RS",
+      "tp_escola": "3",
+      "mt": {
+        "soma_decimos": 60851450,
+        "contagem": 9455,
+        "media": "643.59"
+      },
+      "redacao": {
+        "soma_decimos": 73609200,
+        "contagem": 9611,
+        "media": "765.88"
+      }
+    },
+    {
+      "uf": "SC",
+      "tp_escola": "1",
+      "mt": {
+        "soma_decimos": 177023064,
+        "contagem": 31310,
+        "media": "565.39"
+      },
+      "redacao": {
+        "soma_decimos": 209470800,
+        "contagem": 33298,
+        "media": "629.08"
+      }
+    },
+    {
+      "uf": "SC",
+      "tp_escola": "2",
+      "mt": {
+        "soma_decimos": 127175840,
+        "contagem": 24084,
+        "media": "528.05"
+      },
+      "redacao": {
+        "soma_decimos": 154251800,
+        "contagem": 25635,
+        "media": "601.72"
+      }
+    },
+    {
+      "uf": "SC",
+      "tp_escola": "3",
+      "mt": {
+        "soma_decimos": 49837713,
+        "contagem": 7611,
+        "media": "654.81"
+      },
+      "redacao": {
+        "soma_decimos": 58182400,
+        "contagem": 7769,
+        "media": "748.90"
+      }
+    },
+    {
+      "uf": "SE",
+      "tp_escola": "1",
+      "mt": {
+        "soma_decimos": 166169195,
+        "contagem": 32425,
+        "media": "512.47"
+      },
+      "redacao": {
+        "soma_decimos": 209060600,
+        "contagem": 33555,
+        "media": "623.04"
+      }
+    },
+    {
+      "uf": "SE",
+      "tp_escola": "2",
+      "mt": {
+        "soma_decimos": 57256110,
+        "contagem": 11992,
+        "media": "477.45"
+      },
+      "redacao": {
+        "soma_decimos": 74850800,
+        "contagem": 12358,
+        "media": "605.69"
+      }
+    },
+    {
+      "uf": "SE",
+      "tp_escola": "3",
+      "mt": {
+        "soma_decimos": 18103543,
+        "contagem": 3000,
+        "media": "603.45"
+      },
+      "redacao": {
+        "soma_decimos": 23893800,
+        "contagem": 3030,
+        "media": "788.57"
+      }
+    },
+    {
+      "uf": "SP",
+      "tp_escola": "1",
+      "mt": {
+        "soma_decimos": 1290294586,
+        "contagem": 222488,
+        "media": "579.94"
+      },
+      "redacao": {
+        "soma_decimos": 1503505400,
+        "contagem": 234949,
+        "media": "639.93"
+      }
+    },
+    {
+      "uf": "SP",
+      "tp_escola": "2",
+      "mt": {
+        "soma_decimos": 687877398,
+        "contagem": 129888,
+        "media": "529.59"
+      },
+      "redacao": {
+        "soma_decimos": 810105600,
+        "contagem": 137067,
+        "media": "591.03"
+      }
+    },
+    {
+      "uf": "SP",
+      "tp_escola": "3",
+      "mt": {
+        "soma_decimos": 378610161,
+        "contagem": 59489,
+        "media": "636.44"
+      },
+      "redacao": {
+        "soma_decimos": 444714400,
+        "contagem": 60619,
+        "media": "733.62"
+      }
+    },
+    {
+      "uf": "TO",
+      "tp_escola": "1",
+      "mt": {
+        "soma_decimos": 66045484,
+        "contagem": 12931,
+        "media": "510.75"
+      },
+      "redacao": {
+        "soma_decimos": 82450800,
+        "contagem": 13794,
+        "media": "597.73"
+      }
+    },
+    {
+      "uf": "TO",
+      "tp_escola": "2",
+      "mt": {
+        "soma_decimos": 37926116,
+        "contagem": 7908,
+        "media": "479.59"
+      },
+      "redacao": {
+        "soma_decimos": 47430800,
+        "contagem": 8470,
+        "media": "559.99"
+      }
+    },
+    {
+      "uf": "TO",
+      "tp_escola": "3",
+      "mt": {
+        "soma_decimos": 5324930,
+        "contagem": 857,
+        "media": "621.35"
+      },
+      "redacao": {
+        "soma_decimos": 6768200,
+        "contagem": 872,
+        "media": "776.17"
+      }
+    }
+  ]
+}

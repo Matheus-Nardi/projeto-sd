@@ -1,0 +1,4 @@
+codigo_supervisor=0
+{"tentativa": 1, "nos": ["master", "worker1", "worker2"], "codigo": 255, "duracao_s": 17.725321830999746, "metricas": null}
+{"tentativa": 2, "nos": ["master", "worker1"], "codigo": 0, "duracao_s": 21.305002449999847, "metricas": {"modo": "mpi", "politica": "dinamica", "workers": 1, "bloco_linhas": 10000, "atrasos_s": {}, "tempo_total_s": 20.323521317, "blocos": 220, "blocos_retomados": 174, "bytes_enviados": 66076010, "tarefas_por_worker": {"1": 220}, "tempo_ocupado_por_worker_s": {"1": 15.687690303001546}}}
+identico=sim
